@@ -23,6 +23,11 @@
   "homepage": "https://github.com/aperdomob/workshop-api-testing-js#readme",
   "devDependencies": {
     "chai": "^4.1.1",
+    "http-status-codes": "^1.2.0",
     "mocha": "^3.5.0"
+  },
+  "dependencies": {
+    "superagent": "^3.6.0",
+    "superagent-promise": "^1.1.0"
   }
 }
