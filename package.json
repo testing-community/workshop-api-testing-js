@@ -4,7 +4,8 @@
   "description": "This is a Workshop about Api Testing in JavaScript",
   "main": "index.js",
   "scripts": {
-    "test": "mocha -t 5000 --reporter mochawesome --reporter-options reportDir=report,reportFilename=ApiTesting"
+    "lint": "eslint ./test/**/*.js",
+    "test": "npm run lint && mocha -t 5000 --reporter mochawesome --reporter-options reportDir=report,reportFilename=ApiTesting"
   },
   "repository": {
     "type": "git",
@@ -23,6 +24,9 @@
   "homepage": "https://github.com/aperdomob/workshop-api-testing-js#readme",
   "devDependencies": {
     "chai": "^4.1.1",
+    "eslint": "^4.6.1",
+    "eslint-config-airbnb-base": "^12.0.0",
+    "eslint-plugin-import": "^2.7.0",
     "http-status-codes": "^1.2.0",
     "mocha": "^3.5.0",
     "mochawesome": "^2.3.0"
