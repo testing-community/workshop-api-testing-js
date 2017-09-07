@@ -4,7 +4,7 @@
   "description": "This is a Workshop about Api Testing in JavaScript",
   "main": "index.js",
   "scripts": {
-    "test": "mocha -t 5000"
+    "test": "mocha -t 5000 --reporter mochawesome --reporter-options reportDir=report,reportFilename=ApiTesting"
   },
   "repository": {
     "type": "git",
@@ -24,7 +24,8 @@
   "devDependencies": {
     "chai": "^4.1.1",
     "http-status-codes": "^1.2.0",
-    "mocha": "^3.5.0"
+    "mocha": "^3.5.0",
+    "mochawesome": "^2.3.0"
   },
   "dependencies": {
     "superagent": "^3.6.0",
