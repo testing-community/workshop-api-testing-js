@@ -1,5 +1,4 @@
 const agent = require('superagent-promise')(require('superagent'), Promise);
-// const statusCode = require('http-status-codes');
 const { expect } = require('chai');
 
 const urlBase = 'https://api.github.com';
