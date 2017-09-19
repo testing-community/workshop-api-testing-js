@@ -7,13 +7,13 @@ describe('Given an authenticate github user', () => {
   let user;
 
   before(() => {
-    const request = agent.get(`${urlBase}/user`)
+    const userRequest = agent.get(`${urlBase}/user`)
       .auth('token', process.env.ACCESS_TOKEN)
       .then((response) => {
         user = response.body;
       });
 
-    return request;
+    return userRequest;
   });
 
   it('then should have repositories', () => {
@@ -24,14 +24,14 @@ describe('Given an authenticate github user', () => {
     let firstRepository;
 
     before(() => {
-      const request = agent.get(user.repos_url)
+      const repositoriesRequest = agent.get(user.repos_url)
         .auth('token', process.env.ACCESS_TOKEN)
         .then((response) => {
           const { body } = response;
           firstRepository = body.shift();
         });
 
-      return request;
+      return repositoriesRequest;
     });
 
     it('then should have some repository', () => {
@@ -44,26 +44,38 @@ describe('Given an authenticate github user', () => {
       let issue;
 
       before(() => {
-        const request = agent.post(`${urlBase}/repos/${user.login}/${firstRepository.name}/issues`, newIssue)
+        const newIssueRequest = agent.post(`${urlBase}/repos/${user.login}/${firstRepository.name}/issues`, newIssue)
           .auth('token', process.env.ACCESS_TOKEN)
           .then((response) => {
             issue = response.body;
           });
 
-        return request;
+        return newIssueRequest;
       });
 
       it('then the issue should be created', () => {
+        expect(issue.id).to.not.equal(undefined);
         expect(issue.title).to.equal(newIssue.title);
       });
 
-      it('then add the body', () =>
-        agent.patch(`${urlBase}/repos/${user.login}/${firstRepository.name}/issues/${issue.number}`, updateIssue)
-          .auth('token', process.env.ACCESS_TOKEN)
-          .then((response) => {
-            expect(response.body.title).to.equal(newIssue.title);
-            expect(response.body.body).to.equal(updateIssue.body);
-          }));
+      describe('when modify an issue', () => {
+        let modifiedIssue;
+
+        before(() => {
+          const modifiedIssueQuery = agent.patch(`${urlBase}/repos/${user.login}/${firstRepository.name}/issues/${issue.number}`, updateIssue)
+            .auth('token', process.env.ACCESS_TOKEN)
+            .then((response) => {
+              modifiedIssue = response.body;
+            });
+
+          return modifiedIssueQuery;
+        });
+
+        it('then add the body', () => {
+          expect(modifiedIssue.title).to.equal(newIssue.title);
+          expect(modifiedIssue.body).to.equal(updateIssue.body);
+        });
+      });
     });
   });
 });
