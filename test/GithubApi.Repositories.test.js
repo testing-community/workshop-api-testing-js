@@ -11,13 +11,13 @@ describe('Given a user logged in github', () => {
     let user;
 
     before(() => {
-      const query = agent.get(`${urlBase}/users/${username}`)
+      const userQuery = agent.get(`${urlBase}/users/${username}`)
         .auth('token', process.env.ACCESS_TOKEN)
         .then((response) => {
           user = response.body;
         });
 
-      return query;
+      return userQuery;
     });
 
     it('then the user should be loaded', () => {
@@ -32,14 +32,14 @@ describe('Given a user logged in github', () => {
       const expectedRepository = 'jasmine-awesome-report';
 
       before(() => {
-        const query = agent.get(user.repos_url)
+        const repositoriesQuery = agent.get(user.repos_url)
           .auth('token', process.env.ACCESS_TOKEN)
           .then((response) => {
             repositories = response.body;
             repository = repositories.find(repo => repo.name === expectedRepository);
           });
 
-        return query;
+        return repositoriesQuery;
       });
 
       it(`then should have ${expectedRepository} repository`, () => {
@@ -54,14 +54,14 @@ describe('Given a user logged in github', () => {
         let zip;
 
         before(() => {
-          const query = agent.get(`${repository.svn_url}/archive/${repository.default_branch}.zip`)
+          const downloadQuery = agent.get(`${repository.svn_url}/archive/${repository.default_branch}.zip`)
             .auth('token', process.env.ACCESS_TOKEN)
             .buffer(true)
             .then((response) => {
               zip = response.text;
             });
 
-          return query;
+          return downloadQuery;
         });
 
         it('then the repository should be downloaded', () => {
@@ -77,14 +77,14 @@ describe('Given a user logged in github', () => {
         let readme;
 
         before(() => {
-          const query = agent.get(`${repository.url}/contents`)
+          const readmeFileQuery = agent.get(`${repository.url}/contents`)
             .auth('token', process.env.ACCESS_TOKEN)
             .then((response) => {
               files = response.body;
               readme = files.find(file => file.name === 'README.md');
             });
 
-          return query;
+          return readmeFileQuery;
         });
 
         it('then should have README.md file', () => {
@@ -99,12 +99,12 @@ describe('Given a user logged in github', () => {
           let fileContent;
 
           before(() => {
-            const query = agent.get(readme.download_url)
+            const downloadReadmeQuery = agent.get(readme.download_url)
               .then((response) => {
                 fileContent = response.text;
               });
 
-            return query;
+            return downloadReadmeQuery;
           });
 
           it('then the file should be dowloaded', () => {
