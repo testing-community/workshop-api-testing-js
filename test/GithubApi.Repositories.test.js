@@ -30,7 +30,7 @@ describe('Given a user logged in github', () => {
       expect(user.location).to.equal('Colombia');
     });
 
-    describe('when get his repos', () => {
+    describe('when get his repositories', () => {
       let repositories;
       let repository;
       const expectedRepository = 'jasmine-awesome-report';
@@ -112,7 +112,7 @@ describe('Given a user logged in github', () => {
             return downloadReadmeQuery;
           });
 
-          it('then the file should be dowloaded', () => {
+          it('then the file should be downloaded', () => {
             expect(md5(fileContent)).to.equal(expectedMd5);
           });
         });

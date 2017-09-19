@@ -56,6 +56,7 @@ describe('Given an authenticate github user', () => {
       it('then the issue should be created', () => {
         expect(issue.id).to.not.equal(undefined);
         expect(issue.title).to.equal(newIssue.title);
+        expect(issue.body).to.equal(null);
       });
 
       describe('when modify an issue', () => {
