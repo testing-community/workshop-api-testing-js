@@ -1,6 +1,10 @@
 const agent = require('superagent-promise')(require('superagent'), Promise);
-const { expect, assert } = require('chai');
+const chai = require('chai');
 const md5 = require('md5');
+
+chai.use(require('chai-subset'));
+
+const { expect, assert } = chai;
 
 const urlBase = 'https://api.github.com';
 
@@ -70,8 +74,11 @@ describe('Given a user logged in github', () => {
       });
 
       describe('when get path file list', () => {
-        const filename = 'README.md';
-        const sha = '9bcf2527fd5cd12ce18e457581319a349f9a56f3';
+        const format = {
+          name: 'README.md',
+          path: 'README.md',
+          sha: '9bcf2527fd5cd12ce18e457581319a349f9a56f3'
+        };
 
         let files;
         let readme;
@@ -89,9 +96,7 @@ describe('Given a user logged in github', () => {
 
         it('then should have README.md file', () => {
           assert.exists(readme);
-          expect(readme.name).to.equal(filename);
-          expect(readme.path).to.equal(filename);
-          expect(readme.sha).to.equal(sha);
+          expect(readme).containSubset(format);
         });
 
         describe('when get the file content', () => {
