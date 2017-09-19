@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint ./test/**/*.js",
-    "test": "npm run lint && mocha -t 5000 --reporter mochawesome --reporter-options reportDir=report,reportFilename=ApiTesting"
+    "test": "npm run lint && mocha -t 10000 --reporter mochawesome --reporter-options reportDir=report,reportFilename=ApiTesting"
   },
   "repository": {
     "type": "git",
