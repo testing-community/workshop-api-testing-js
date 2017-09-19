@@ -28,6 +28,7 @@
     "eslint-config-airbnb-base": "^12.0.0",
     "eslint-plugin-import": "^2.7.0",
     "http-status-codes": "^1.2.0",
+    "md5": "^2.2.1",
     "mocha": "^3.5.0",
     "mochawesome": "^2.3.0"
   },
