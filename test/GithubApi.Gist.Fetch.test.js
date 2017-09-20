@@ -20,7 +20,7 @@ const defaultHeaders = {
 };
 let gist;
 
-describe('Given a github user', () => {
+describe.only('Given a github user', () => {
   describe('when create a gist', () => {
     const createGist = {
       description: 'this is an example about promise',
@@ -33,7 +33,7 @@ describe('Given a github user', () => {
     };
 
     let newGistQuery;
-    let statusNewGistQuery;
+    let newGistQueryStatus;
 
     before(() => {
       const parameters = {
@@ -44,7 +44,7 @@ describe('Given a github user', () => {
 
       newGistQuery = isomorphic(`${urlBase}/gists`, parameters)
         .then((response) => {
-          statusNewGistQuery = response.status;
+          newGistQueryStatus = response.status;
           return response.json();
         })
         .then((body) => {
@@ -58,7 +58,7 @@ describe('Given a github user', () => {
     it('then a new gist should be created', () => {
       newGistQuery
         .then(() => {
-          expect(statusCode.CREATED).to.equal(statusNewGistQuery);
+          expect(newGistQueryStatus).to.equal(statusCode.CREATED);
           expect(gist).to.containSubset(createGist);
         });
     });
