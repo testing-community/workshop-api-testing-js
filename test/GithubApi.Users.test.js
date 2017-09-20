@@ -4,7 +4,7 @@ const { expect } = require('chai');
 
 const urlBase = 'https://api.github.com';
 
-describe('Given a github user', () => {
+describe.only('Given a github user', () => {
   describe('when gets all users', () => {
     let queryTime;
 
@@ -19,8 +19,40 @@ describe('Given a github user', () => {
       return usersQuery;
     });
 
-    it('then should have a quick reponse', () => {
+    it('when should have a quick reponse', () => {
       expect(queryTime).to.be.at.below(5000);
+    });
+
+    it('and should contains thirty users by default pagination', () =>
+      agent
+        .get(`${urlBase}/users`)
+        .auth('token', process.env.ACCESS_TOKEN)
+        .then(allUserResponse =>
+          expect(allUserResponse.body.length).to.equal(30)));
+
+    describe('when it filters the number of users', () => {
+      let tenUsersQuery;
+      let oneHundredUsersQuery;
+
+      before(() => {
+        tenUsersQuery = agent
+          .get(`${urlBase}/users`)
+          .auth('token', process.env.ACCESS_TOKEN)
+          .query({ per_page: 10 });
+
+        oneHundredUsersQuery = agent
+          .get(`${urlBase}/users`)
+          .auth('token', process.env.ACCESS_TOKEN)
+          .query({ per_page: 100 });
+      });
+
+      it('then the filtered users should be less than default pagination', () =>
+        tenUsersQuery.then(tenFilteredUsers =>
+          expect(tenFilteredUsers.body.length).to.equal(10)));
+
+      it('then the filtered users should be greater than default pagination', () =>
+        oneHundredUsersQuery.then(oneHundredFilteredUsers =>
+          expect(oneHundredFilteredUsers.body.length).to.equal(100)));
     });
   });
 });
