@@ -2,7 +2,7 @@ const agent = require('superagent-promise')(require('superagent'), Promise);
 const { expect } = require('chai');
 const statusCode = require('http-status-codes');
 
-describe.only('Given a renamed repository', () => {
+describe('Given a renamed repository', () => {
   const oldRepositoryName = 'https://github.com/aperdomob/redirect-test';
   const newRepositoryName = 'https://github.com/aperdomob/new-redirect-test';
 
