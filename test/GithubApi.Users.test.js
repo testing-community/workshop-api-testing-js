@@ -14,7 +14,7 @@ describe.only('Given a github user', () => {
         .auth('token', process.env.ACCESS_TOKEN)
         .use(responseTime((request, time) => {
           queryTime = time;
-        })).then(() => 0);
+        })).then(() => 0); // this line is needed because this libray has issues
 
       return usersQuery;
     });
