@@ -28,7 +28,7 @@ describe('Given a github user', () => {
       expect(queryTime).to.be.at.below(5000);
     });
 
-    it('and should contains thirty users by default pagination', () =>
+    it('and it should contain thirty users by default pagination', () =>
       allUsers.then(allUserResponse =>
         expect(allUserResponse.body.length).to.equal(30)));
 
@@ -42,7 +42,7 @@ describe('Given a github user', () => {
           .query({ per_page: 10 });
       });
 
-      it('then the filtered number users should be equals 10', () =>
+      it('then the number of filtered users should be equals to 10', () =>
         tenUsersQuery.then(tenFilteredUsers =>
           expect(tenFilteredUsers.body.length).to.equal(10)));
     });
@@ -57,7 +57,7 @@ describe('Given a github user', () => {
           .query({ per_page: 100 });
       });
 
-      it('then the filtered number users should be equals 100', () =>
+      it('then the number of filtered users should be equals to 100', () =>
         oneHundredUsersQuery.then(oneHundredFilteredUsers =>
           expect(oneHundredFilteredUsers.body.length).to.equal(100)));
     });
