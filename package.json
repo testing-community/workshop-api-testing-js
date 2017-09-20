@@ -24,6 +24,7 @@
   "homepage": "https://github.com/aperdomob/workshop-api-testing-js#readme",
   "devDependencies": {
     "chai": "^4.1.1",
+    "chai-json-schema": "^1.5.0",
     "chai-subset": "^1.6.0",
     "eslint": "^4.6.1",
     "eslint-config-airbnb-base": "^12.0.0",
