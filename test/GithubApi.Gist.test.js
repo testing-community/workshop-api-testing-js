@@ -1,6 +1,10 @@
 const agent = require('superagent-promise')(require('superagent'), Promise);
-const { expect } = require('chai');
+const chai = require('chai');
 const statusCode = require('http-status-codes');
+
+chai.use(require('chai-subset'));
+
+const { expect } = chai;
 
 const jsCode = `
 function wait(method, time) {
@@ -38,9 +42,7 @@ describe('Given a github user', () => {
       newGistQuery.then((response) => {
         gist = response.body;
         expect(response.status).to.equal(statusCode.CREATED);
-        expect(createGist.description).to.equal(gist.description);
-        expect(createGist.public).to.equal(gist.public);
-        expect(createGist.files['promise.js'].content).to.equal(gist.files['promise.js'].content);
+        expect(gist).to.containSubset(createGist);
       }));
 
     describe('and get the new gist', () => {
