@@ -24,8 +24,7 @@ describe('Given a renamed repository', () => {
 
       before(() => {
         oldRequest = agent
-          .get(oldRepositoryName)
-          .auth('token', process.env.ACCESS_TOKEN);
+          .get(oldRepositoryName);
       });
 
       it('then url should be redirected', () =>
