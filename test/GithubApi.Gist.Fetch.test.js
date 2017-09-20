@@ -20,7 +20,7 @@ const defaultHeaders = {
 };
 let gist;
 
-describe.only('Given a github user', () => {
+describe('Given a github user', () => {
   describe('when create a gist', () => {
     const createGist = {
       description: 'this is an example about promise',
