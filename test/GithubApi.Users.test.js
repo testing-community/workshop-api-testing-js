@@ -4,11 +4,16 @@ const { expect } = require('chai');
 
 const urlBase = 'https://api.github.com';
 
-describe.only('Given a github user', () => {
+describe('Given a github user', () => {
   describe('when gets all users', () => {
     let queryTime;
+    let allUsers;
 
     before(() => {
+      allUsers = agent
+        .get(`${urlBase}/users`)
+        .auth('token', process.env.ACCESS_TOKEN);
+
       const usersQuery = agent
         .get(`${urlBase}/users`)
         .auth('token', process.env.ACCESS_TOKEN)
@@ -19,16 +24,13 @@ describe.only('Given a github user', () => {
       return usersQuery;
     });
 
-    it('when should have a quick reponse', () => {
+    it('then should have a quick reponse', () => {
       expect(queryTime).to.be.at.below(5000);
     });
 
     it('and should contains thirty users by default pagination', () =>
-      agent
-        .get(`${urlBase}/users`)
-        .auth('token', process.env.ACCESS_TOKEN)
-        .then(allUserResponse =>
-          expect(allUserResponse.body.length).to.equal(30)));
+      allUsers.then(allUserResponse =>
+        expect(allUserResponse.body.length).to.equal(30)));
 
     describe('when it filters the number of users', () => {
       let tenUsersQuery;
