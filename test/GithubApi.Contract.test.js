@@ -25,7 +25,7 @@ describe('Given event Github API resources', () => {
               created_at: { type: 'string' },
               type: {
                 type: 'string',
-                enum: ['PushEvent', 'PullRequestEvent', 'MemberEvent', 'CreateEvent', 'DeleteEvent', 'PullRequestReviewCommentEvent', 'IssueCommentEvent', 'WatchEvent', 'IssuesEvent', 'ForkEvent']
+                enum: ['PushEvent', 'PullRequestEvent', 'MemberEvent', 'CreateEvent', 'DeleteEvent', 'PullRequestReviewCommentEvent', 'IssueCommentEvent', 'WatchEvent', 'IssuesEvent', 'ForkEvent', 'GollumEvent']
               },
               actor: {
                 type: 'object',
