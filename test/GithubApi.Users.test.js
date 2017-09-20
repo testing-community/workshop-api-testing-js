@@ -4,7 +4,7 @@ const { expect } = require('chai');
 
 const urlBase = 'https://api.github.com';
 
-describe.only('Given a github user', () => {
+describe('Given a github user', () => {
   describe('when gets all users', () => {
     let queryTime;
 
