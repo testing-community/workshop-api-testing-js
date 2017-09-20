@@ -32,27 +32,32 @@ describe('Given a github user', () => {
       allUsers.then(allUserResponse =>
         expect(allUserResponse.body.length).to.equal(30)));
 
-    describe('when it filters the number of users', () => {
+    describe('when it filters the number of users to 10', () => {
       let tenUsersQuery;
-      let oneHundredUsersQuery;
 
       before(() => {
         tenUsersQuery = agent
           .get(`${urlBase}/users`)
           .auth('token', process.env.ACCESS_TOKEN)
           .query({ per_page: 10 });
+      });
 
+      it('then the filtered number users should be equals 10', () =>
+        tenUsersQuery.then(tenFilteredUsers =>
+          expect(tenFilteredUsers.body.length).to.equal(10)));
+    });
+
+    describe('when it filters the number of users to 100', () => {
+      let oneHundredUsersQuery;
+
+      before(() => {
         oneHundredUsersQuery = agent
           .get(`${urlBase}/users`)
           .auth('token', process.env.ACCESS_TOKEN)
           .query({ per_page: 100 });
       });
 
-      it('then the filtered users should be less than default pagination', () =>
-        tenUsersQuery.then(tenFilteredUsers =>
-          expect(tenFilteredUsers.body.length).to.equal(10)));
-
-      it('then the filtered users should be greater than default pagination', () =>
+      it('then the filtered number users should be equals 100', () =>
         oneHundredUsersQuery.then(oneHundredFilteredUsers =>
           expect(oneHundredFilteredUsers.body.length).to.equal(100)));
     });
