@@ -18,17 +18,18 @@ En esta primera parte se creará un proyecto node desde 0 y se configurará la p
    * [luigisamurai](https://github.com/luigisamurai)
 1. [Instalar NodeJS](https://nodejs.org/es/download/package-manager/) en su equipo si no lo tiene instalado
 1. Ejecutar en una consola `npm init` dentro de la ruta donde se encuentra el repositorio y colocar la siguiente información:
-   | Parametro          | Valor |
-   | ------------------ | ---------- |
-   | **Name**           | _[Por Defecto]_                                    |
-   | **Version**        | _[Por Defecto]_                                    |
-   | **Description**    | This is a Workshop about Api Testing in JavaScript |
-   | **Entry Point**    | _[Por Defecto]_                                    |
-   | **Test Command**   | `mocha`                                            |
-   | **Git Repository** | _[Por Defecto]_                                    |
-   | **Keywords**       | api-testing, dojo, practice                        |
-   | **Author**         | _[Su nombre]_ <_[Su correo]_> (_[su github]_)      |
-   | **License**        | MIT                                                |
+    | Parametro          | Valor                                              |
+    | ------------------ | -------------------------------------------------- |
+    | **Name**           | _[Por Defecto]_                                    |
+    | **Version**        | _[Por Defecto]_                                    |
+    | **Description**    | This is a Workshop about Api Testing in JavaScript |
+    | **Entry Point**    | _[Por Defecto]_                                    |
+    | **Test Command**   | `mocha`                                            |
+    | **Git Repository** | _[Por Defecto]_                                    |
+    | **Keywords**       | api-testing, dojo, practice                        |
+    | **Author**         | _[Su nombre]_ <_[Su correo]_> (_[su github]_)      |
+    | **License**        | MIT                                                |
+
 1. Instalar la dependencia de desarrollo mocha, chai
    ```sh
    npm install --save-dev mocha chai
