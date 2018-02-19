@@ -54,56 +54,56 @@ En esta primera parte se creará un proyecto node desde 0 y se configurará la p
 1. Crear un PR y esperar por la aprobación o comentarios de los revisores
 1. Una vez aprobado realizar el merge a master seleccionando la opción **“squash and merge”**.
 
-### Primera prueba de API
+### Primera Prueba de API
 
 En esta sesión, crearemos las primeras pruebas consumiendo de distintas formas servicios API Rest. Utilizaremos una librería cliente llamada **superagent** y otra que contiene un enumerador de los principales códigos de respuesta.
 
 1. Crear una nueva rama a partir de master: `git checkout -b <new-branch>`
 1. Instalar las dependencia de desarrollo **http-status-codes**
-  ```sh
-  npm install --save-dev http-status-codes
-  ```
+    ```sh
+    npm install --save-dev http-status-codes
+    ```
 1. Instalar la dependencias **superagent** y **superagent-promise**. (Tenga en cuenta que estas no son de desarrollo)
-  ```sh
-  npm install --save superagent superagent-promise
-  ```
+    ```sh
+    npm install --save superagent superagent-promise
+    ```
 1. Dentro de la carpeta test crear el archivo `MyFirstApiConsume.test.js`
-  ```js
-  const agent = require('superagent-promise')(require('superagent'), Promise);
-  const statusCode = require('http-status-codes');
-  const chai = require('chai');
+    ```js
+    const agent = require('superagent-promise')(require('superagent'), Promise);
+    const statusCode = require('http-status-codes');
+    const chai = require('chai');
 
-  const expect = chai.expect;
+    const expect = chai.expect;
 
-  describe('First Api Tests', () => {
-  });
-  ```
-1. Agregar una prueba consumiendo un servicio GET
-  ```js
-  it('Consume GET Service', () => {
-    return agent.get('https://httpbin.org/ip').then((response) => {
-      expect(response.status).to.equal(statusCode.OK);
-      expect(response.body).to.have.property('origin');
+    describe('First Api Tests', () => {
     });
-  });
-  ```
-1. Agregar una prueba consumiendo un servicio GET con Query Parameters
-  ```js
-  it('Consume GET Service with query parameters', () => {
-    const query = {
-      name: 'John',
-      age: '31',
-      city: 'New York'
-    };
-
-    return agent.get('https://httpbin.org/get')
-      .query(query)
-      .then((response) => {
+    ```
+1. Agregar una prueba consumiendo un servicio GET
+    ```js
+    it('Consume GET Service', () => {
+      return agent.get('https://httpbin.org/ip').then((response) => {
         expect(response.status).to.equal(statusCode.OK);
-        expect(response.body.args).to.eql(query);
+        expect(response.body).to.have.property('origin');
       });
-  });
-  ```
+    });
+    ```
+1. Agregar una prueba consumiendo un servicio GET con Query Parameters
+    ```js
+    it('Consume GET Service with query parameters', () => {
+      const query = {
+        name: 'John',
+        age: '31',
+        city: 'New York'
+      };
+
+      return agent.get('https://httpbin.org/get')
+        .query(query)
+        .then((response) => {
+          expect(response.status).to.equal(statusCode.OK);
+          expect(response.body.args).to.eql(query);
+        });
+    });
+    ```
 1. Ejecutar las pruebas.
 1. Agregar pruebas consumiendo servicios HEAD, PATCH, PUT, DELETE (Utilice https://httpbin.org/ para encontrar los servicios) y (la documentación de [superagent](http://visionmedia.github.io/superagent/)
 1. Elimine el archivo test/HelloWord.test.js
