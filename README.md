@@ -4,7 +4,7 @@ This is a Workshop about Api Testing in JavaScript
 
 ## Stages
 
-### 1. Configuración inicial del proyecto [(project-setup branch)](https://github.com/aperdomob/workshop-api-testing-js/tree/project-setup)
+### Configuración inicial del proyecto [(project-setup branch)](https://github.com/aperdomob/workshop-api-testing-js/tree/project-setup)
 
 En esta primera parte se creará un proyecto node desde 0 y se configurará la primera prueba utilizando mocha. Adicionalmente este proyecto se montará en Github
 
@@ -54,7 +54,7 @@ En esta primera parte se creará un proyecto node desde 0 y se configurará la p
 1. Crear un PR y esperar por la aprobación o comentarios de los revisores
 1. Una vez aprobado realizar el merge a master seleccionando la opción **“squash and merge”**
 
-### 1. Primera prueba de API
+### Primera prueba de API
 
 En esta sesión, crearemos las primeras pruebas consumiendo de distintas formas servicios API Rest. Utilizaremos una librería cliente llamada **superagent** y otra que contiene un enumerador de los principales códigos de respuesta.
 
