@@ -4,7 +4,7 @@ This is a Workshop about Api Testing in JavaScript
 
 ## Stages
 
-### Configuración inicial del proyecto [(project-setup branch)](https://github.com/aperdomob/workshop-api-testing-js/tree/project-setup)
+### Configuración inicial del proyecto
 
 En esta primera parte se creará un proyecto node desde 0 y se configurará la primera prueba utilizando mocha. Adicionalmente este proyecto se montará en Github
 
@@ -52,7 +52,7 @@ En esta primera parte se creará un proyecto node desde 0 y se configurará la p
 1. Crear el archivo **LICENSE** en la raíz del proyecto con lo especificado en <https://en.wikipedia.org/wiki/MIT_License> (_Tenga en cuanta cambiar el año y el copyright holders_)
 1. Realizar un `commit` donde incluya los 4 archivos modificados con el mensaje **“setup mocha configuration”** y subir los cambios al repositorio
 1. Crear un PR y esperar por la aprobación o comentarios de los revisores
-1. Una vez aprobado realizar el merge a master seleccionando la opción **“squash and merge”**
+1. Una vez aprobado realizar el merge a master seleccionando la opción **“squash and merge”**.
 
 ### Primera prueba de API
 
