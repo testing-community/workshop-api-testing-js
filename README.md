@@ -105,6 +105,49 @@ En esta sesión, crearemos las primeras pruebas consumiendo de distintas formas 
     });
     ```
 1. Ejecutar las pruebas.
-1. Agregar pruebas consumiendo servicios HEAD, PATCH, PUT, DELETE (Utilice https://httpbin.org/ para encontrar los servicios) y (la documentación de [superagent](http://visionmedia.github.io/superagent/)
-1. Elimine el archivo test/HelloWord.test.js
+1. Agregar pruebas consumiendo servicios **HEAD**, **PATCH**, **PUT**, **DELETE** (Utilice https://httpbin.org/ para encontrar los servicios) y (la documentación de [superagent](http://visionmedia.github.io/superagent/))
+1. Elimine el archivo `test/HelloWord.test.js`
 1. Haga commit y push de los cambios, creen un PR y solicite la revisión. Una vez aprobado haga merge con master
+
+### Integración Continua
+
+En esta sesión se configurará la integración continua con travis, adicionalmente se activará dentro de github una validación que sólo permita realizar merge si la integración continua ha pasado. Y por último se configurará mocha para que haga una espera mucho más grande por la ejecución de las pruebas ya que algunos request pueden tomar más de 2 segundos.
+
+1. Crear el archivo `.travis.yml` en la raíz del proyecto
+1. Agregar el siguiente contenido
+    ```yaml
+    language: node_js
+    cache:
+    directories:
+    - node_modules
+    notifications:
+    email: false
+    node_js:
+    - '7'
+    - '6'
+    branches:
+    except:
+    - /^v\d+\.\d+\.\d+$/
+    ```
+1. Habilitar en Travis en el repositorio https://docs.travis-ci.com/user/getting-started/
+1. Modifique el script de **test** del package.json agregando al final `-t 5000`
+1. Cree un PR
+1. Verificar que la ejecución en Travis termine correctamente
+1. Ir a la configuración del repositorio y modifique el branch protegido master activando travis como requerido
+1. Solicite revisión del PR
+
+### Reporte de Pruebas
+
+A pesar que mocha nos muestra un reporte por consola, en muchas ocasiones es bueno mostrar un reporte con interfaz gráfica para que los managers o clientes puedan ver los resultados de las pruebas. En esta sesión se configurará un reporte HTML que permite ver los resultados de las pruebas cuando lo ejecutemos localmente
+
+1. Instale la dependencia de desarrollo **mochawesome**
+1. Modificar el script test en el `package.json` de la siguiente forma
+    ```json
+    "test": "mocha -t 5000 --reporter mochawesome --reporter-options reportDir=report,reportFilename=ApiTesting"
+    ```
+1. Agregar las siguientes líneas dentro del .gitignore
+    ```bash
+    ## Reports ##
+    report
+    ```
+1. Cree un PR y solicite revisión (**Dentro de la descripción del PR debe contener una imagen mostrando el reporte HTML que genero mochawesome**), como se muestra en la siguiente imagen
