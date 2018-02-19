@@ -36,17 +36,17 @@ En esta primera parte se creará un proyecto node desde 0 y se configurará la p
    npm install --save-dev mocha chai
    ```
 1. Crear el archivo `HelloWord.test.js` dentro de una carpeta test y utilizar el siguiente codigo como contenido
-  ```js
-  const { assert } = require('chai');
+    ```js
+    const { assert } = require('chai');
 
-  describe('Array', () => {
-  describe('#indexOf()', () => {
-    it('should return -1 when the value is not present', function() {
-      assert.equal(-1, [1,2,3].indexOf(4));
+    describe('Array', () => {
+      describe('#indexOf()', () => {
+        it('should return -1 when the value is not present', function() {
+          assert.equal(-1, [1,2,3].indexOf(4));
+        });
+      });
     });
-  });
-  });
-  ```
+    ```
 1. Ejecutar el comando `npm test` y comprobar que la prueba pasa de forma satisfactoria
 1. Crear el archivo **.gitignore** en la raíz del proyecto. Ingresar a la página <https://www.gitignore.io/> y en el área de texto  agregar el _sistema operativo_, _IDE's_ y _NodeJS_, ejemplo _OSX Node VisualStudioCode_. Genere el archivo y cópielo dentro del archivo **.gitignore**
 1. Crear el archivo **LICENSE** en la raíz del proyecto con lo especificado en <https://en.wikipedia.org/wiki/MIT_License> (_Tenga en cuanta cambiar el año y el copyright holders_)
