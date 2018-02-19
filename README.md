@@ -18,6 +18,7 @@ En esta primera parte se creará un proyecto node desde 0 y se configurará la p
    * [luigisamurai](https://github.com/luigisamurai)
 1. [Instalar NodeJS](https://nodejs.org/es/download/package-manager/) en su equipo si no lo tiene instalado
 1. Ejecutar en una consola `npm init` dentro de la ruta donde se encuentra el repositorio y colocar la siguiente información:
+
     | Parametro          | Valor                                              |
     | ------------------ | -------------------------------------------------- |
     | **Name**           | _[Por Defecto]_                                    |
