@@ -177,7 +177,7 @@ Los analizadores de código estático nos permiten estandarizar como los desarro
 1. Ejecute el comando `npm run lint -- --fix` (Esto debe resolverle algunos errores de código estático de forma automática) en caso que todos los errores no se resuelvan investigue en qué consiste el error y resuélvalo
 1. Envíe un PR con los cambios
 
-### Autenticación en GitHub
+### Autenticación en GitHub
 
 En ésta sección se realizarán pruebas al API de Github, en donde se consultarán datos del repositorio que hemos creado y se implementarán mecanismos para trabajar con la autenticación de ésta API.
 
@@ -195,14 +195,37 @@ En ésta sección se realizarán pruebas al API de Github, en donde se consultar
     const repository = 'workshop-api-testing-js';
 
     describe('Github Api Test', () => {
-    describe('Authentication', () => {
-      it('Via OAuth2 Tokens by Header', () =>
-        agent.get(`${urlBase}/repos/${githubUserName}/${repository}`)
-          .auth('token', process.env.ACCESS_TOKEN)
-          .then((response) => {
-            expect(response.status).to.equal(statusCode.OK);
-            expect(response.body.description).equal('This is a Workshop about Api Testing in JavaScript');
-          }));
-    });
+      describe('Authentication', () => {
+        it('Via OAuth2 Tokens by Header', () =>
+          agent.get(`${urlBase}/repos/${githubUserName}/${repository}`)
+            .auth('token', process.env.ACCESS_TOKEN)
+            .then((response) => {
+              expect(response.status).to.equal(statusCode.OK);
+              expect(response.body.description).equal('This is a Workshop about Api Testing in JavaScript');
+            }));
+      });
     });
     ```
+
+1. Reemplazar el valor de githubUserName por su usuario de Github.
+1. Reemplazar el valor de repository por el nombre del repositorio
+1. Establecer la variable de entorno **ACCESS_TOKEN** con el valor del token de acceso.
+    ```bash
+    export ACCESS_TOKEN=token_de_acceso
+    ```
+1. Ejecutar las pruebas.
+1. Adicionar la prueba para autenticación por parámetros.
+    ```js
+    it('Via OAuth2 Tokens by parameter', () =>
+      agent.get(`${urlBase}/repos/${githubUserName}/${repository}`)
+        .query(`access_token=${process.env.ACCESS_TOKEN}`)
+        .then((response) => {
+          expect(response.status).to.equal(statusCode.OK);
+          expect(response.body.description).equal('This is a Workshop about Api Testing in JavaScript');
+        }));
+    ```
+1. Encriptar la variable **ACCESS_TOKEN** en travis. Debe instalar localmente travis-cli
+    ```bash
+    travis encrypt ACCESS_TOKEN="your-access-token" --add --org
+    ```
+1. Subir los cambios a GitHub, crear un PR y solicitar revisión
