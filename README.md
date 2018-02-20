@@ -151,3 +151,58 @@ A pesar que mocha nos muestra un reporte por consola, en muchas ocasiones es bue
     report
     ```
 1. Cree un PR y solicite revisión (**Dentro de la descripción del PR debe contener una imagen mostrando el reporte HTML que genero mochawesome**), como se muestra en la siguiente imagen
+    ![Mocha awesome](https://raw.githubusercontent.com/wiki/AgileTestingColombia/workshop-api-testing-js/images/mochawesome-repor.png)
+
+### Verificación de Código Estático
+
+Los analizadores de código estático nos permiten estandarizar como los desarrolladores escriben código. En esta sesión se configurará eslint con las reglas de estilo de código propuesto por AirBnb, cómo podemos ejecutar la validación de código y cómo automáticamente se pueden corregir algunas reglas, adicionalmente si no es posible corregirlo de forma automática como poder corregirla.
+
+1. Instalar las dependencias de desarrollo **eslint** **eslint-config-airbnb-base** **eslint-plugin-import**
+1. Crear el archivo **.eslintrc.yml** en la raíz del proyecto, con el siguiente contenido
+    ```yml
+    env:
+      es6: true
+      node: true
+      mocha: true
+    extends:
+      - eslint:recommended
+      - airbnb-base
+      - plugin:import/errors
+      - plugin:import/warnings
+    rules:
+      "comma-dangle": ["error", "never"]
+    ```
+1. Agregar dentro de scripts del **package.json** `"lint": "eslint ./test/**/*.js"`
+1. Modificar el script de test agregandole al inicio `npm run lint &&`
+1. Ejecute el comando `npm run lint -- --fix` (Esto debe resolverle algunos errores de código estático de forma automática) en caso que todos los errores no se resuelvan investigue en qué consiste el error y resuélvalo
+1. Envíe un PR con los cambios
+
+### Autenticación en GitHub
+
+En ésta sección se realizarán pruebas al API de Github, en donde se consultarán datos del repositorio que hemos creado y se implementarán mecanismos para trabajar con la autenticación de ésta API.
+
+1. Crear un token de acceso en nuestra cuenta de Github seleccionando (repo, gist, notification, users) y darle acceso público a nuestro repositorios. Recuerde que debe copiar el token ya que no volverá a tener acceso a él. [Documentación](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/)
+
+1. Dentro de la carpeta test crear el archivo `GithubApi.Authentication.test.js`
+
+    ```js
+    const agent = require('superagent-promise')(require('superagent'), Promise);
+    const statusCode = require('http-status-codes');
+    const { expect } = require('chai');
+
+    const urlBase = 'https://api.github.com';
+    const githubUserName = 'AgileTestingColombia';
+    const repository = 'workshop-api-testing-js';
+
+    describe('Github Api Test', () => {
+    describe('Authentication', () => {
+      it('Via OAuth2 Tokens by Header', () =>
+        agent.get(`${urlBase}/repos/${githubUserName}/${repository}`)
+          .auth('token', process.env.ACCESS_TOKEN)
+          .then((response) => {
+            expect(response.status).to.equal(statusCode.OK);
+            expect(response.body.description).equal('This is a Workshop about Api Testing in JavaScript');
+          }));
+    });
+    });
+    ```
