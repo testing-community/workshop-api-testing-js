@@ -11,6 +11,7 @@ describe('Given a user github logged', () => {
 
     before(() => {
       followQuery = agent.put(`${urlBase}/user/following/${username}`)
+        .set('User-Agent', 'agent')
         .auth('token', process.env.ACCESS_TOKEN);
     });
 
@@ -26,6 +27,7 @@ describe('Given a user github logged', () => {
       before(() => {
         userFollowQuery = agent.get(`${urlBase}/user/following`)
           .auth('token', process.env.ACCESS_TOKEN)
+          .set('User-Agent', 'agent')
           .then(response => response.body.find(user => user.login === username));
       });
 
@@ -38,6 +40,7 @@ describe('Given a user github logged', () => {
 
       before(() => {
         followUserAgainQuery = agent.put(`${urlBase}/user/following/${username}`)
+          .set('User-Agent', 'agent')
           .auth('token', process.env.ACCESS_TOKEN);
       });
 
@@ -52,6 +55,7 @@ describe('Given a user github logged', () => {
 
           before(() => {
             userFollowQuery = agent.get(`${urlBase}/user/following`)
+              .set('User-Agent', 'agent')
               .auth('token', process.env.ACCESS_TOKEN)
               .then(response => response.body.find(user => user.login === username));
           });

@@ -12,11 +12,13 @@ describe('Given a github user', () => {
     before(() => {
       allUsers = agent
         .get(`${urlBase}/users`)
+        .set('User-Agent', 'agent')
         .auth('token', process.env.ACCESS_TOKEN);
 
       const usersQuery = agent
         .get(`${urlBase}/users`)
         .auth('token', process.env.ACCESS_TOKEN)
+        .set('User-Agent', 'agent')
         .use(responseTime((request, time) => {
           queryTime = time;
         })).then(() => 0); // this line is needed because this libray has issues
@@ -39,6 +41,7 @@ describe('Given a github user', () => {
         tenUsersQuery = agent
           .get(`${urlBase}/users`)
           .auth('token', process.env.ACCESS_TOKEN)
+          .set('User-Agent', 'agent')
           .query({ per_page: 10 });
       });
 
@@ -54,6 +57,7 @@ describe('Given a github user', () => {
         oneHundredUsersQuery = agent
           .get(`${urlBase}/users`)
           .auth('token', process.env.ACCESS_TOKEN)
+          .set('User-Agent', 'agent')
           .query({ per_page: 100 });
       });
 

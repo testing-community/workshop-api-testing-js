@@ -14,6 +14,7 @@ describe('Given event Github API resources', () => {
     before(() => {
       listPublicEventsQuery = agent
         .get(`${urlBase}/events`)
+        .set('User-Agent', 'agent')
         .auth('token', process.env.ACCESS_TOKEN);
     });
 

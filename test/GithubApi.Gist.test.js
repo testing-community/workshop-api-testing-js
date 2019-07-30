@@ -35,6 +35,7 @@ describe('Given a github user', () => {
     before(() => {
       newGistQuery = agent
         .post(`${urlBase}/gists`, createGist)
+        .set('User-Agent', 'agent')
         .auth('token', process.env.ACCESS_TOKEN);
     });
 
@@ -51,6 +52,7 @@ describe('Given a github user', () => {
       before(() => {
         gistQuery = agent
           .get(gist.url)
+          .set('User-Agent', 'agent')
           .auth('token', process.env.ACCESS_TOKEN);
       });
 
@@ -63,6 +65,7 @@ describe('Given a github user', () => {
         before(() => {
           deleteGistQuery = agent
             .del(gist.url)
+            .set('User-Agent', 'agent')
             .auth('token', process.env.ACCESS_TOKEN);
         });
 
@@ -77,6 +80,7 @@ describe('Given a github user', () => {
         before(() => {
           gistNotFoundQuery = agent
             .get(gist.url)
+            .set('User-Agent', 'agent')
             .auth('token', process.env.ACCESS_TOKEN);
         });
 
