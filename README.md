@@ -304,7 +304,7 @@ se consumirá por medio de un head un repositorio el cual fue cambiado de nombre
 
 1. Crear el archivo `GithubApi.Redirect.js` y dentro de dentro de este, codificar los cambios necesarios para los pasos siguientes
 1. Consultar con el método `HEAD` la url `https://github.com/aperdomob/redirect-test` y comprobar el código de estado 301 y que tenga la redirección a la url `https://github.com/aperdomob/new-redirect-test`
-1. Consultar con el método GET la url https://github.com/aperdomob/redirect-test y verificar que redireccione de forma correcta
+1. Consultar con el método GET la url <https://github.com/aperdomob/redirect-test> y verificar que redireccione de forma correcta
 
 ### Tiempos de Respuesta
 
@@ -340,19 +340,19 @@ En muchas ocasiones debemos verificar que la respuesta que entrega debe cumplir 
 
     describe('Given event Github API resources', () => {
     describe('When wanna verify the List public events', () => {
-    let listPublicEventsQuery;
+      let listPublicEventsQuery;
 
-    before(() => {
-        listPublicEventsQuery = agent
-        .get(`${urlBase}/events`)
-        .auth('token', process.env.ACCESS_TOKEN);
-    });
+      before(() => {
+          listPublicEventsQuery = agent
+          .get(`${urlBase}/events`)
+          .auth('token', process.env.ACCESS_TOKEN);
+      });
 
-    it('then the body should have a schema', () =>
-        listPublicEventsQuery.then((response) => {
-        expect(response).to.be.jsonSchema(listPublicEventsSchema);
+      it('then the body should have a schema', () =>
+          listPublicEventsQuery.then((response) => {
+          expect(response).to.be.jsonSchema(listPublicEventsSchema);
         }));
-    });
+      });
     });
     ```
 
