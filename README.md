@@ -119,7 +119,7 @@ En esta sesión, crearemos las primeras pruebas consumiendo de distintas formas 
     ```
 
 1. Ejecutar las pruebas.
-1. Agregar pruebas consumiendo servicios **HEAD**, **PATCH**, **PUT**, **DELETE** (Utilice https://httpbin.org/ para encontrar los servicios) y (la documentación de [superagent](http://visionmedia.github.io/superagent/))
+1. Agregar pruebas consumiendo servicios **HEAD**, **PATCH**, **PUT**, **DELETE** (Utilice <https://httpbin.org/> para encontrar los servicios) y (la documentación de [superagent](http://visionmedia.github.io/superagent/))
 1. Elimine el archivo `test/HelloWord.test.js`
 1. Haga commit y push de los cambios, creen un PR y solicite la revisión. Una vez aprobado haga merge con master
 
@@ -145,7 +145,7 @@ En esta sesión se configurará la integración continua con travis, adicionalme
     - /^v\d+\.\d+\.\d+$/
     ```
 
-1. Habilitar en Travis en el repositorio https://docs.travis-ci.com/user/getting-started/
+1. Habilitar en Travis en el repositorio <https://docs.travis-ci.com/user/getting-started/>
 1. Modifique el script de **test** del package.json agregando al final `-t 5000`
 1. Cree un PR
 1. Verificar que la ejecución en Travis termine correctamente
@@ -264,7 +264,7 @@ En esta sesión se automatizarán algunas pruebas utilizando métodos GET de la 
 
 1. Crear el archivo `GithubApi.Repositories.test.js` y dentro de él hacer el resto de pasos
 1. Consumir el servicio `https://api.github.com/users/aperdomob` y comprobar el nombre, la compañía y la ubicación del usuario
-1. Obtener la lista de los repositorios por medio de hypermedia, y busque un repositorio con el nombre **jasmine-awesome-report** sobre ese repositorio verifique el nombre completo del repositorio, si es privado, y la descripción del repositorio. Utilice el método `find` para encontrar el repositorio que busca https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find
+1. Obtener la lista de los repositorios por medio de hypermedia, y busque un repositorio con el nombre **jasmine-awesome-report** sobre ese repositorio verifique el nombre completo del repositorio, si es privado, y la descripción del repositorio. Utilice el método `find` para encontrar el repositorio que busca <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find>
 1. Descargue el repositorio en un zip y compruebe que descargó de forma adecuada. Aproveche la hypermedia de las anteriores respuesta para formar la url de descarga
 1. Obtenga la lista de archivos del repositorio y encuentre el Archivo README.md compruebe su nombre, path y su sha. Use el método containtSubset de chai-subset
 1. Por último, descargue el archivo README.md con ayuda del hypermedia y compruebe su md5
@@ -274,8 +274,8 @@ En esta sesión se automatizarán algunas pruebas utilizando métodos GET de la 
 En esta sesión seguiremos a un usuario de github, comprobaremos que efectivamente lo seguimos y posteriormente volveremos a seguirlo con el fin de comprobar la idempotencia del método **PUT**
 
 1. Crear el archivo GithubApi.Put.test.js y dentro de él hacer el resto de pasos
-1. Seguir al usuario aperdomob consumiendo con el método PUT la url https://api.github.com/user/following/aperdomob. Verificar que la consulta devuelve un 204 y que efectivamente el cuerpo venga vacío
-1. Consulte la lista de usuario y verifique que efectivamente sigue a aperdomob, puede consumir https://api.github.com/user/following
+1. Seguir al usuario aperdomob consumiendo con el método PUT la url <https://api.github.com/user/following/aperdomob.> Verificar que la consulta devuelve un 204 y que efectivamente el cuerpo venga vacío
+1. Consulte la lista de usuario y verifique que efectivamente sigue a aperdomob, puede consumir <https://api.github.com/user/following>
 1. Vuelva a llamar el endpoint para seguir al usuario aperdomob y verifique la idempotencia del método
 
 ### Consumiendo métodos POST y PATCH
