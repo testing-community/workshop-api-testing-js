@@ -9,6 +9,7 @@ describe('Given an authenticate github user', () => {
   before(() => {
     const userRequest = agent.get(`${urlBase}/user`)
       .auth('token', process.env.ACCESS_TOKEN)
+      .set('User-Agent', 'agent')
       .then((response) => {
         user = response.body;
       });
@@ -26,6 +27,7 @@ describe('Given an authenticate github user', () => {
     before(() => {
       const repositoriesRequest = agent.get(user.repos_url)
         .auth('token', process.env.ACCESS_TOKEN)
+        .set('User-Agent', 'agent')
         .then((response) => {
           const { body } = response;
           firstRepository = body.shift();
@@ -46,6 +48,7 @@ describe('Given an authenticate github user', () => {
       before(() => {
         const newIssueRequest = agent.post(`${urlBase}/repos/${user.login}/${firstRepository.name}/issues`, newIssue)
           .auth('token', process.env.ACCESS_TOKEN)
+          .set('User-Agent', 'agent')
           .then((response) => {
             issue = response.body;
           });
@@ -65,6 +68,7 @@ describe('Given an authenticate github user', () => {
         before(() => {
           const modifiedIssueQuery = agent.patch(`${urlBase}/repos/${user.login}/${firstRepository.name}/issues/${issue.number}`, updateIssue)
             .auth('token', process.env.ACCESS_TOKEN)
+            .set('User-Agent', 'agent')
             .then((response) => {
               modifiedIssue = response.body;
             });

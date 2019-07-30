@@ -17,6 +17,7 @@ describe('Given a user logged in github', () => {
     before(() => {
       const userQuery = agent.get(`${urlBase}/users/${username}`)
         .auth('token', process.env.ACCESS_TOKEN)
+        .set('User-Agent', 'agent')
         .then((response) => {
           user = response.body;
         });
@@ -38,6 +39,7 @@ describe('Given a user logged in github', () => {
       before(() => {
         const repositoriesQuery = agent.get(user.repos_url)
           .auth('token', process.env.ACCESS_TOKEN)
+          .set('User-Agent', 'agent')
           .then((response) => {
             repositories = response.body;
             repository = repositories.find(repo => repo.name === expectedRepository);
@@ -60,6 +62,7 @@ describe('Given a user logged in github', () => {
         before(() => {
           const downloadQuery = agent.get(`${repository.svn_url}/archive/${repository.default_branch}.zip`)
             .auth('token', process.env.ACCESS_TOKEN)
+            .set('User-Agent', 'agent')
             .buffer(true)
             .then((response) => {
               zip = response.text;
@@ -86,6 +89,7 @@ describe('Given a user logged in github', () => {
         before(() => {
           const readmeFileQuery = agent.get(`${repository.url}/contents`)
             .auth('token', process.env.ACCESS_TOKEN)
+            .set('User-Agent', 'agent')
             .then((response) => {
               files = response.body;
               readme = files.find(file => file.name === 'README.md');
