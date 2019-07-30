@@ -77,7 +77,7 @@ describe('Given a user logged in github', () => {
         const format = {
           name: 'README.md',
           path: 'README.md',
-          sha: '9bcf2527fd5cd12ce18e457581319a349f9a56f3'
+          sha: 'b9900ca9b34077fe6a8f2aaa37a173824fa9751d'
         };
 
         let files;
@@ -100,7 +100,7 @@ describe('Given a user logged in github', () => {
         });
 
         describe('when get the file content', () => {
-          const expectedMd5 = '8a406064ca4738447ec522e639f828bf';
+          const expectedMd5 = '0e62b07144b4fa997eedb864ff93e26b';
           let fileContent;
 
           before(() => {

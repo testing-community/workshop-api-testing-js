@@ -206,7 +206,7 @@ Los analizadores de código estático nos permiten estandarizar como los desarro
 
 En ésta sección se realizarán pruebas al API de Github, en donde se consultarán datos del repositorio que hemos creado y se implementarán mecanismos para trabajar con la autenticación de ésta API.
 
-1. Crear un token de acceso en nuestra cuenta de Github seleccionando (repo, gist, notification, users) y darle acceso público a nuestro repositorios. Recuerde que debe copiar el token ya que no volverá a tener acceso a él. [Documentación](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/)
+1. Crear un token de acceso en nuestra cuenta de Github seleccionando (repo, gist, users) y darle acceso público a nuestro repositorios. Recuerde que debe copiar el token ya que no volverá a tener acceso a él. [Documentación](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/)
 
 1. Dentro de la carpeta test crear el archivo `GithubApi.Authentication.test.js`
 
