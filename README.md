@@ -224,6 +224,7 @@ En ésta sección se realizarán pruebas al API de Github, en donde se consultar
         it('Via OAuth2 Tokens by Header', () =>
           agent.get(`${urlBase}/repos/${githubUserName}/${repository}`)
             .auth('token', process.env.ACCESS_TOKEN)
+            .set('User-Agent', 'agent')
             .then((response) => {
               expect(response.status).to.equal(statusCode.OK);
               expect(response.body.description).equal('This is a Workshop about Api Testing in JavaScript');
@@ -348,6 +349,7 @@ En muchas ocasiones debemos verificar que la respuesta que entrega debe cumplir 
         before(() => {
           listPublicEventsQuery = agent
           .get(`${urlBase}/events`)
+          .set('User-Agent', 'agent')
           .auth('token', process.env.ACCESS_TOKEN);
         });
 
