@@ -1,4 +1,4 @@
-const agent = require('superagent-promise')(require('superagent'), Promise);
+const agent = require('superagent');
 const chai = require('chai');
 const statusCode = require('http-status-codes');
 

@@ -1,4 +1,4 @@
-const agent = require('superagent-promise')(require('superagent'), Promise);
+const agent = require('superagent');
 const responseTime = require('superagent-response-time');
 const { expect } = require('chai');
 
