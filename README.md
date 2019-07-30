@@ -32,10 +32,13 @@ En esta primera parte se creará un proyecto node desde 0 y se configurará la p
     | **License**        | MIT                                                |
 
 1. Instalar la dependencia de desarrollo mocha, chai
+
    ```sh
    npm install --save-dev mocha chai
    ```
+
 1. Crear el archivo `HelloWord.test.js` dentro de una carpeta test y utilizar el siguiente codigo como contenido
+
     ```js
     const { assert } = require('chai');
 
@@ -47,6 +50,7 @@ En esta primera parte se creará un proyecto node desde 0 y se configurará la p
       });
     });
     ```
+
 1. Ejecutar el comando `npm test` y comprobar que la prueba pasa de forma satisfactoria
 1. Crear el archivo **.gitignore** en la raíz del proyecto. Ingresar a la página <https://www.gitignore.io/> y en el área de texto  agregar el _sistema operativo_, _IDE's_ y _NodeJS_, ejemplo _OSX Node VisualStudioCode_. Genere el archivo y cópielo dentro del archivo **.gitignore**
 1. Crear el archivo **LICENSE** en la raíz del proyecto con lo especificado en <https://en.wikipedia.org/wiki/MIT_License> (_Tenga en cuanta cambiar el año y el copyright holders_)
@@ -60,14 +64,19 @@ En esta sesión, crearemos las primeras pruebas consumiendo de distintas formas 
 
 1. Crear una nueva rama a partir de master: `git checkout -b <new-branch>`
 1. Instalar las dependencia de desarrollo **http-status-codes**
+
     ```sh
     npm install --save-dev http-status-codes
     ```
+
 1. Instalar la dependencias **superagent** y **superagent-promise**. (Tenga en cuenta que estas no son de desarrollo)
+
     ```sh
     npm install --save superagent superagent-promise
     ```
+
 1. Dentro de la carpeta test crear el archivo `MyFirstApiConsume.test.js`
+
     ```js
     const agent = require('superagent-promise')(require('superagent'), Promise);
     const statusCode = require('http-status-codes');
@@ -78,7 +87,9 @@ En esta sesión, crearemos las primeras pruebas consumiendo de distintas formas 
     describe('First Api Tests', () => {
     });
     ```
+
 1. Agregar una prueba consumiendo un servicio GET
+
     ```js
     it('Consume GET Service', () => {
       return agent.get('https://httpbin.org/ip').then((response) => {
@@ -87,7 +98,9 @@ En esta sesión, crearemos las primeras pruebas consumiendo de distintas formas 
       });
     });
     ```
+
 1. Agregar una prueba consumiendo un servicio GET con Query Parameters
+
     ```js
     it('Consume GET Service with query parameters', () => {
       const query = {
@@ -104,8 +117,9 @@ En esta sesión, crearemos las primeras pruebas consumiendo de distintas formas 
         });
     });
     ```
+
 1. Ejecutar las pruebas.
-1. Agregar pruebas consumiendo servicios **HEAD**, **PATCH**, **PUT**, **DELETE** (Utilice https://httpbin.org/ para encontrar los servicios) y (la documentación de [superagent](http://visionmedia.github.io/superagent/))
+1. Agregar pruebas consumiendo servicios **HEAD**, **PATCH**, **PUT**, **DELETE** (Utilice <https://httpbin.org/> para encontrar los servicios) y (la documentación de [superagent](http://visionmedia.github.io/superagent/))
 1. Elimine el archivo `test/HelloWord.test.js`
 1. Haga commit y push de los cambios, creen un PR y solicite la revisión. Una vez aprobado haga merge con master
 
@@ -115,6 +129,7 @@ En esta sesión se configurará la integración continua con travis, adicionalme
 
 1. Crear el archivo `.travis.yml` en la raíz del proyecto
 1. Agregar el siguiente contenido
+
     ```yaml
     language: node_js
     cache:
@@ -129,7 +144,8 @@ En esta sesión se configurará la integración continua con travis, adicionalme
     except:
     - /^v\d+\.\d+\.\d+$/
     ```
-1. Habilitar en Travis en el repositorio https://docs.travis-ci.com/user/getting-started/
+
+1. Habilitar en Travis en el repositorio <https://docs.travis-ci.com/user/getting-started/>
 1. Modifique el script de **test** del package.json agregando al final `-t 5000`
 1. Cree un PR
 1. Verificar que la ejecución en Travis termine correctamente
@@ -142,14 +158,18 @@ A pesar que mocha nos muestra un reporte por consola, en muchas ocasiones es bue
 
 1. Instale la dependencia de desarrollo **mochawesome**
 1. Modificar el script test en el `package.json` de la siguiente forma
+
     ```json
     "test": "mocha -t 5000 --reporter mochawesome --reporter-options reportDir=report,reportFilename=ApiTesting"
     ```
+
 1. Agregar las siguientes líneas dentro del .gitignore
+
     ```bash
     ## Reports ##
     report
     ```
+
 1. Cree un PR y solicite revisión (**Dentro de la descripción del PR debe contener una imagen mostrando el reporte HTML que genero mochawesome**), como se muestra en la siguiente imagen
     ![Mocha awesome](https://raw.githubusercontent.com/wiki/AgileTestingColombia/workshop-api-testing-js/images/mochawesome-repor.png)
 
@@ -159,6 +179,7 @@ Los analizadores de código estático nos permiten estandarizar como los desarro
 
 1. Instalar las dependencias de desarrollo **eslint** **eslint-config-airbnb-base** **eslint-plugin-import**
 1. Crear el archivo **.eslintrc.yml** en la raíz del proyecto, con el siguiente contenido
+
     ```yml
     env:
       es6: true
@@ -172,6 +193,7 @@ Los analizadores de código estático nos permiten estandarizar como los desarro
     rules:
       "comma-dangle": ["error", "never"]
     ```
+
 1. Agregar dentro de scripts del **package.json** `"lint": "eslint ./test/**/*.js"`
 1. Modificar el script de test agregandole al inicio `npm run lint &&`
 1. Ejecute el comando `npm run lint -- --fix` (Esto debe resolverle algunos errores de código estático de forma automática) en caso que todos los errores no se resuelvan investigue en qué consiste el error y resuélvalo
@@ -210,11 +232,14 @@ En ésta sección se realizarán pruebas al API de Github, en donde se consultar
 1. Reemplazar el valor de githubUserName por su usuario de Github.
 1. Reemplazar el valor de repository por el nombre del repositorio
 1. Establecer la variable de entorno **ACCESS_TOKEN** con el valor del token de acceso.
+
     ```bash
     export ACCESS_TOKEN=token_de_acceso
     ```
+
 1. Ejecutar las pruebas.
 1. Adicionar la prueba para autenticación por parámetros.
+
     ```js
     it('Via OAuth2 Tokens by parameter', () =>
       agent.get(`${urlBase}/repos/${githubUserName}/${repository}`)
@@ -224,10 +249,13 @@ En ésta sección se realizarán pruebas al API de Github, en donde se consultar
           expect(response.body.description).equal('This is a Workshop about Api Testing in JavaScript');
         }));
     ```
+
 1. Encriptar la variable **ACCESS_TOKEN** en travis. Debe instalar localmente travis-cli
+
     ```bash
     travis encrypt ACCESS_TOKEN="your-access-token" --add --org
     ```
+
 1. Subir los cambios a GitHub, crear un PR y solicitar revisión
 
 ### Consumiendo Métodos GET
@@ -236,7 +264,7 @@ En esta sesión se automatizarán algunas pruebas utilizando métodos GET de la 
 
 1. Crear el archivo `GithubApi.Repositories.test.js` y dentro de él hacer el resto de pasos
 1. Consumir el servicio `https://api.github.com/users/aperdomob` y comprobar el nombre, la compañía y la ubicación del usuario
-1. Obtener la lista de los repositorios por medio de hypermedia, y busque un repositorio con el nombre **jasmine-awesome-report** sobre ese repositorio verifique el nombre completo del repositorio, si es privado, y la descripción del repositorio. Utilice el método `find` para encontrar el repositorio que busca https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find
+1. Obtener la lista de los repositorios por medio de hypermedia, y busque un repositorio con el nombre **jasmine-awesome-report** sobre ese repositorio verifique el nombre completo del repositorio, si es privado, y la descripción del repositorio. Utilice el método `find` para encontrar el repositorio que busca <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find>
 1. Descargue el repositorio en un zip y compruebe que descargó de forma adecuada. Aproveche la hypermedia de las anteriores respuesta para formar la url de descarga
 1. Obtenga la lista de archivos del repositorio y encuentre el Archivo README.md compruebe su nombre, path y su sha. Use el método containtSubset de chai-subset
 1. Por último, descargue el archivo README.md con ayuda del hypermedia y compruebe su md5
@@ -246,8 +274,8 @@ En esta sesión se automatizarán algunas pruebas utilizando métodos GET de la 
 En esta sesión seguiremos a un usuario de github, comprobaremos que efectivamente lo seguimos y posteriormente volveremos a seguirlo con el fin de comprobar la idempotencia del método **PUT**
 
 1. Crear el archivo GithubApi.Put.test.js y dentro de él hacer el resto de pasos
-1. Seguir al usuario aperdomob consumiendo con el método PUT la url https://api.github.com/user/following/aperdomob. Verificar que la consulta devuelve un 204 y que efectivamente el cuerpo venga vacío
-1. Consulte la lista de usuario y verifique que efectivamente sigue a aperdomob, puede consumir https://api.github.com/user/following
+1. Seguir al usuario aperdomob consumiendo con el método PUT la url <https://api.github.com/user/following/aperdomob.> Verificar que la consulta devuelve un 204 y que efectivamente el cuerpo venga vacío
+1. Consulte la lista de usuario y verifique que efectivamente sigue a aperdomob, puede consumir <https://api.github.com/user/following>
 1. Vuelva a llamar el endpoint para seguir al usuario aperdomob y verifique la idempotencia del método
 
 ### Consumiendo métodos POST y PATCH
@@ -276,7 +304,7 @@ se consumirá por medio de un head un repositorio el cual fue cambiado de nombre
 
 1. Crear el archivo `GithubApi.Redirect.js` y dentro de dentro de este, codificar los cambios necesarios para los pasos siguientes
 1. Consultar con el método `HEAD` la url `https://github.com/aperdomob/redirect-test` y comprobar el código de estado 301 y que tenga la redirección a la url `https://github.com/aperdomob/new-redirect-test`
-1. Consultar con el método GET la url https://github.com/aperdomob/redirect-test y verificar que redireccione de forma correcta
+1. Consultar con el método GET la url <https://github.com/aperdomob/redirect-test> y verificar que redireccione de forma correcta
 
 ### Tiempos de Respuesta
 
@@ -299,6 +327,7 @@ En esta sesión se enviará query parameters para poder obtener más o menos can
 En muchas ocasiones debemos verificar que la respuesta que entrega debe cumplir con un esquema generalmente ese tipo de pruebas llevan el nombre de “pruebas de contrato”, una forma sencilla de verificarlo es por medio de json schema validator. Lo que se realizará en este ejercicio es automatizar un solo caso de prueba verificando ese esquema
 
 1. Cree el archivo GithubApi.Contract.test.js con el siguiente contenido
+
     ```js
     const agent = require('superagent-promise')(require('superagent'), Promise);
     const chai = require('chai');
@@ -310,29 +339,32 @@ En muchas ocasiones debemos verificar que la respuesta que entrega debe cumplir 
     const urlBase = 'https://api.github.com';
 
     describe('Given event Github API resources', () => {
-    describe('When wanna verify the List public events', () => {
-    let listPublicEventsQuery;
+      describe('When wanna verify the List public events', () => {
+        let listPublicEventsQuery;
 
-    before(() => {
-        listPublicEventsQuery = agent
-        .get(`${urlBase}/events`)
-        .auth('token', process.env.ACCESS_TOKEN);
-    });
+        before(() => {
+          listPublicEventsQuery = agent
+          .get(`${urlBase}/events`)
+          .auth('token', process.env.ACCESS_TOKEN);
+        });
 
-    it('then the body should have a schema', () =>
-        listPublicEventsQuery.then((response) => {
-        expect(response).to.be.jsonSchema(listPublicEventsSchema);
+        it('then the body should have a schema', () =>
+          listPublicEventsQuery.then((response) => {
+          expect(response).to.be.jsonSchema(listPublicEventsSchema);
         }));
-    });
+      });
     });
     ```
+
 1. Cree el archivo `schema/ListPublicEvents.schema.js` (En este archivo se agregará el esquema que se validará). Con la siguiente información
+
     ```js
     const listPublicEventsSchema = {
     };
 
     exports.listPublicEventsSchema = listPublicEventsSchema;
     ````
+
 1. Completar el archivo ListPublicEvents con el esquema que cubra cada una de los keys del json de respuesta, tenga en cuenta tipos de datos (numeros, booleanos, arrays, string, objects), enumeraciones
 
 ### Librería Alterna de Clientes
