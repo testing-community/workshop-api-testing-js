@@ -1,4 +1,4 @@
-const agent = require('superagent-promise')(require('superagent'), Promise);
+const agent = require('superagent');
 const chai = require('chai');
 const md5 = require('md5');
 

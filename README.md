@@ -78,7 +78,7 @@ En esta sesión, crearemos las primeras pruebas consumiendo de distintas formas 
 1. Dentro de la carpeta test crear el archivo `MyFirstApiConsume.test.js`
 
     ```js
-    const agent = require('superagent-promise')(require('superagent'), Promise);
+    const agent = require('superagent');
     const statusCode = require('http-status-codes');
     const chai = require('chai');
 
@@ -211,7 +211,7 @@ En ésta sección se realizarán pruebas al API de Github, en donde se consultar
 1. Dentro de la carpeta test crear el archivo `GithubApi.Authentication.test.js`
 
     ```js
-    const agent = require('superagent-promise')(require('superagent'), Promise);
+    const agent = require('superagent');
     const statusCode = require('http-status-codes');
     const { expect } = require('chai');
 
@@ -333,7 +333,7 @@ En muchas ocasiones debemos verificar que la respuesta que entrega debe cumplir 
 1. Cree el archivo GithubApi.Contract.test.js con el siguiente contenido
 
     ```js
-    const agent = require('superagent-promise')(require('superagent'), Promise);
+    const agent = require('superagent');
     const chai = require('chai');
     const { listPublicEventsSchema } = require('./schema/ListPublicEvents.schema');
 
