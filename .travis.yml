@@ -4,9 +4,6 @@ cache:
   - node_modules
 notifications:
   email: false
-node_js:
-- '7'
-- '6'
 branches:
   except:
   - /^v\d+\.\d+\.\d+$/
