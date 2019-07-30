@@ -143,7 +143,7 @@ En esta sesión se configurará la integración continua con travis, adicionalme
     ```
 
 1. Habilitar en Travis en el repositorio <https://docs.travis-ci.com/user/getting-started/>
-1. Crear el archivo `.nvmrc
+1. Crear el archivo `.nvmrc` con el siguiente contenido
 
     ``` shell
     v10.16.0
