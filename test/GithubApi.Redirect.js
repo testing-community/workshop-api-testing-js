@@ -13,7 +13,7 @@ describe('Given a renamed repository', () => {
       headQuery = agent.head(oldRepositoryName);
     });
 
-    it.only('then should have the redirect information', () =>
+    it('then should have the redirect information', () =>
       headQuery.catch((error) => {
         expect(error.response.headers.location).to.equal(newRepositoryName);
         expect(error.status).to.equal(statusCode.MOVED_PERMANENTLY);
