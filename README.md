@@ -137,15 +137,18 @@ En esta sesión se configurará la integración continua con travis, adicionalme
     - node_modules
     notifications:
     email: false
-    node_js:
-    - '7'
-    - '6'
     branches:
     except:
-    - /^v\d+\.\d+\.\d+$/
+    - "/^v\\d+\\.\\d+\\.\\d+$/"
     ```
 
 1. Habilitar en Travis en el repositorio <https://docs.travis-ci.com/user/getting-started/>
+1. Crear el archivo `.nvmrc
+
+    ``` shell
+    v10.16.0
+    ```
+
 1. Modifique el script de **test** del package.json agregando al final `-t 5000`
 1. Cree un PR
 1. Verificar que la ejecución en Travis termine correctamente
