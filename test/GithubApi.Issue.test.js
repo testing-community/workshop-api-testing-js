@@ -6,15 +6,12 @@ const urlBase = 'https://api.github.com';
 describe('Given an authenticate github user', () => {
   let user;
 
-  before(() => {
-    const userRequest = agent.get(`${urlBase}/user`)
+  before(async () => {
+    const response = await agent.get(`${urlBase}/user`)
       .auth('token', process.env.ACCESS_TOKEN)
-      .set('User-Agent', 'agent')
-      .then((response) => {
-        user = response.body;
-      });
+      .set('User-Agent', 'agent');
 
-    return userRequest;
+    user = response.body;
   });
 
   it('then should have repositories', () => {
@@ -24,16 +21,13 @@ describe('Given an authenticate github user', () => {
   describe('when get all repositories', () => {
     let firstRepository;
 
-    before(() => {
-      const repositoriesRequest = agent.get(user.repos_url)
+    before(async () => {
+      const response = await agent.get(user.repos_url)
         .auth('token', process.env.ACCESS_TOKEN)
-        .set('User-Agent', 'agent')
-        .then((response) => {
-          const { body } = response;
-          firstRepository = body.shift();
-        });
+        .set('User-Agent', 'agent');
 
-      return repositoriesRequest;
+      const { body } = response;
+      firstRepository = body.shift();
     });
 
     it('then should have some repository', () => {
@@ -45,15 +39,12 @@ describe('Given an authenticate github user', () => {
       const updateIssue = { body: 'add a body' };
       let issue;
 
-      before(() => {
-        const newIssueRequest = agent.post(`${urlBase}/repos/${user.login}/${firstRepository.name}/issues`, newIssue)
+      before(async () => {
+        const response = await agent.post(`${urlBase}/repos/${user.login}/${firstRepository.name}/issues`, newIssue)
           .auth('token', process.env.ACCESS_TOKEN)
-          .set('User-Agent', 'agent')
-          .then((response) => {
-            issue = response.body;
-          });
+          .set('User-Agent', 'agent');
 
-        return newIssueRequest;
+        issue = response.body;
       });
 
       it('then the issue should be created', () => {
@@ -65,15 +56,12 @@ describe('Given an authenticate github user', () => {
       describe('when modify an issue', () => {
         let modifiedIssue;
 
-        before(() => {
-          const modifiedIssueQuery = agent.patch(`${urlBase}/repos/${user.login}/${firstRepository.name}/issues/${issue.number}`, updateIssue)
+        before(async () => {
+          const response = await agent.patch(`${urlBase}/repos/${user.login}/${firstRepository.name}/issues/${issue.number}`, updateIssue)
             .auth('token', process.env.ACCESS_TOKEN)
-            .set('User-Agent', 'agent')
-            .then((response) => {
-              modifiedIssue = response.body;
-            });
+            .set('User-Agent', 'agent');
 
-          return modifiedIssueQuery;
+          modifiedIssue = response.body;
         });
 
         it('then add the body', () => {

@@ -9,18 +9,15 @@ const urlBase = 'https://api.github.com';
 
 describe('Given event Github API resources', () => {
   describe('When wanna verify the List public events', () => {
-    let listPublicEventsQuery;
+    let response;
 
-    before(() => {
-      listPublicEventsQuery = agent
+    before(async () => {
+      response = await agent
         .get(`${urlBase}/events`)
         .set('User-Agent', 'agent')
         .auth('token', process.env.ACCESS_TOKEN);
     });
 
-    it('then the body should have a schema', () =>
-      listPublicEventsQuery.then((response) => {
-        expect(response).to.be.jsonSchema(listPublicEventsSchema);
-      }));
+    it('then the body should have a schema', () => expect(response).to.be.jsonSchema(listPublicEventsSchema));
   });
 });

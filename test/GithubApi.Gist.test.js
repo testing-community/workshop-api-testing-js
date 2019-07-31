@@ -30,63 +30,64 @@ describe('Given a github user', () => {
       }
     };
 
-    let newGistQuery;
+    let newGistQueryResponse;
 
-    before(() => {
-      newGistQuery = agent
+    before(async () => {
+      newGistQueryResponse = await agent
         .post(`${urlBase}/gists`, createGist)
         .set('User-Agent', 'agent')
         .auth('token', process.env.ACCESS_TOKEN);
+
+      gist = newGistQueryResponse.body;
     });
 
-    it('then a new gist should be created', () =>
-      newGistQuery.then((response) => {
-        gist = response.body;
-        expect(response.status).to.equal(statusCode.CREATED);
-        expect(gist).to.containSubset(createGist);
-      }));
+    it('then a new gist should be created', () => {
+      expect(newGistQueryResponse.status).to.equal(statusCode.CREATED);
+      expect(gist).to.containSubset(createGist);
+    });
 
     describe('and get the new gist', () => {
-      let gistQuery;
+      let gistQueryResponse;
 
-      before(() => {
-        gistQuery = agent
+      before(async () => {
+        gistQueryResponse = await agent
           .get(gist.url)
           .set('User-Agent', 'agent')
           .auth('token', process.env.ACCESS_TOKEN);
       });
 
-      it('then the Gits should be accessible', () =>
-        gistQuery.then(response => expect(response.status).to.equal(statusCode.OK)));
+      it('then the Gits should be accessible', () => expect(gistQueryResponse.status).to.equal(statusCode.OK));
 
       describe('when delete a gist', () => {
         let deleteGistQuery;
 
-        before(() => {
-          deleteGistQuery = agent
+        before(async () => {
+          deleteGistQuery = await agent
             .del(gist.url)
             .set('User-Agent', 'agent')
             .auth('token', process.env.ACCESS_TOKEN);
         });
 
-        it('then the gist should be deleted', () =>
-          deleteGistQuery
-            .then(response => expect(response.status).to.equal(statusCode.NO_CONTENT)));
+        it('then the gist should be deleted', () => expect(deleteGistQuery.status).to.equal(statusCode.NO_CONTENT));
       });
 
       describe('and try to get the delete gist', () => {
-        let gistNotFoundQuery;
+        let responseStatus;
 
-        before(() => {
-          gistNotFoundQuery = agent
-            .get(gist.url)
-            .set('User-Agent', 'agent')
-            .auth('token', process.env.ACCESS_TOKEN);
+        before(async () => {
+          try {
+            await agent
+              .get(gist.url)
+              .set('User-Agent', 'agent')
+              .auth('token', process.env.ACCESS_TOKEN);
+          } catch (response) {
+            responseStatus = response.status;
+          }
         });
 
-        it('then the Gits should not be accessible', () =>
-          gistNotFoundQuery
-            .catch(response => expect(response.status).to.equal(statusCode.NOT_FOUND)));
+        it('then the Gits should not be accessible', () => {
+          expect(responseStatus).to.equal(statusCode.NOT_FOUND);
+        });
       });
     });
   });
