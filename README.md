@@ -91,30 +91,28 @@ En esta sesión, crearemos las primeras pruebas consumiendo de distintas formas 
 1. Agregar una prueba consumiendo un servicio GET
 
     ```js
-    it('Consume GET Service', () => {
-      return agent.get('https://httpbin.org/ip').then((response) => {
-        expect(response.status).to.equal(statusCode.OK);
-        expect(response.body).to.have.property('origin');
-      });
+    it('Consume GET Service', async () => {
+      const response = await agent.get('https://httpbin.org/ip');
+
+      expect(response.status).to.equal(statusCode.OK);
+      expect(response.body).to.have.property('origin');
     });
     ```
 
 1. Agregar una prueba consumiendo un servicio GET con Query Parameters
 
     ```js
-    it('Consume GET Service with query parameters', () => {
+    it('Consume GET Service with query parameters', async () => {
       const query = {
         name: 'John',
         age: '31',
         city: 'New York'
       };
 
-      return agent.get('https://httpbin.org/get')
-        .query(query)
-        .then((response) => {
-          expect(response.status).to.equal(statusCode.OK);
-          expect(response.body.args).to.eql(query);
-        });
+      const response = await agent.get('https://httpbin.org/get').query(query);
+
+      expect(response.status).to.equal(statusCode.OK);
+      expect(response.body.args).to.eql(query);
     });
     ```
 
@@ -221,14 +219,14 @@ En ésta sección se realizarán pruebas al API de Github, en donde se consultar
 
     describe('Github Api Test', () => {
       describe('Authentication', () => {
-        it('Via OAuth2 Tokens by Header', () =>
-          agent.get(`${urlBase}/repos/${githubUserName}/${repository}`)
+        it('Via OAuth2 Tokens by Header', async () => {
+          const response = await agent.get(`${urlBase}/repos/${githubUserName}/${repository}`)
             .auth('token', process.env.ACCESS_TOKEN)
-            .set('User-Agent', 'agent')
-            .then((response) => {
-              expect(response.status).to.equal(statusCode.OK);
-              expect(response.body.description).equal('This is a Workshop about Api Testing in JavaScript');
-            }));
+            .set('User-Agent', 'agent');
+
+          expect(response.status).to.equal(statusCode.OK);
+          expect(response.body.description).equal('This is a Workshop about Api Testing in JavaScript');
+        });
       });
     });
     ```
@@ -344,19 +342,16 @@ En muchas ocasiones debemos verificar que la respuesta que entrega debe cumplir 
 
     describe('Given event Github API resources', () => {
       describe('When wanna verify the List public events', () => {
-        let listPublicEventsQuery;
+        let response;
 
-        before(() => {
-          listPublicEventsQuery = agent
-          .get(`${urlBase}/events`)
-          .set('User-Agent', 'agent')
-          .auth('token', process.env.ACCESS_TOKEN);
+        before(async () => {
+          response = await agent
+            .get(`${urlBase}/events`)
+            .set('User-Agent', 'agent')
+            .auth('token', process.env.ACCESS_TOKEN);
         });
 
-        it('then the body should have a schema', () =>
-          listPublicEventsQuery.then((response) => {
-          expect(response).to.be.jsonSchema(listPublicEventsSchema);
-        }));
+        it('then the body should have a schema', () => expect(response).to.be.jsonSchema(listPublicEventsSchema));
       });
     });
     ```
