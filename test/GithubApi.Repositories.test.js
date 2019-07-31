@@ -14,15 +14,12 @@ describe('Given a user logged in github', () => {
   describe(`when get ${username} user`, () => {
     let user;
 
-    before(() => {
-      const userQuery = agent.get(`${urlBase}/users/${username}`)
+    before(async () => {
+      const userQueryResponse = await agent.get(`${urlBase}/users/${username}`)
         .auth('token', process.env.ACCESS_TOKEN)
-        .set('User-Agent', 'agent')
-        .then((response) => {
-          user = response.body;
-        });
+        .set('User-Agent', 'agent');
 
-      return userQuery;
+      user = userQueryResponse.body;
     });
 
     it('then the user should be loaded', () => {
@@ -36,16 +33,13 @@ describe('Given a user logged in github', () => {
       let repository;
       const expectedRepository = 'jasmine-awesome-report';
 
-      before(() => {
-        const repositoriesQuery = agent.get(user.repos_url)
+      before(async () => {
+        const repositoriesQueryResponse = await agent.get(user.repos_url)
           .auth('token', process.env.ACCESS_TOKEN)
-          .set('User-Agent', 'agent')
-          .then((response) => {
-            repositories = response.body;
-            repository = repositories.find(repo => repo.name === expectedRepository);
-          });
+          .set('User-Agent', 'agent');
 
-        return repositoriesQuery;
+        repositories = repositoriesQueryResponse.body;
+        repository = repositories.find(repo => repo.name === expectedRepository);
       });
 
       it(`then should have ${expectedRepository} repository`, () => {
@@ -59,16 +53,13 @@ describe('Given a user logged in github', () => {
         const noExpectedMd5 = 'd41d8cd98f00b204e9800998ecf8427e';
         let zip;
 
-        before(() => {
-          const downloadQuery = agent.get(`${repository.svn_url}/archive/${repository.default_branch}.zip`)
+        before(async () => {
+          const downloadQueryResponse = await agent.get(`${repository.svn_url}/archive/${repository.default_branch}.zip`)
             .auth('token', process.env.ACCESS_TOKEN)
             .set('User-Agent', 'agent')
-            .buffer(true)
-            .then((response) => {
-              zip = response.text;
-            });
+            .buffer(true);
 
-          return downloadQuery;
+          zip = downloadQueryResponse.text;
         });
 
         it('then the repository should be downloaded', () => {
@@ -86,16 +77,13 @@ describe('Given a user logged in github', () => {
         let files;
         let readme;
 
-        before(() => {
-          const readmeFileQuery = agent.get(`${repository.url}/contents`)
+        before(async () => {
+          const readmeFileQueryResponse = await agent.get(`${repository.url}/contents`)
             .auth('token', process.env.ACCESS_TOKEN)
-            .set('User-Agent', 'agent')
-            .then((response) => {
-              files = response.body;
-              readme = files.find(file => file.name === 'README.md');
-            });
+            .set('User-Agent', 'agent');
 
-          return readmeFileQuery;
+          files = readmeFileQueryResponse.body;
+          readme = files.find(file => file.name === 'README.md');
         });
 
         it('then should have README.md file', () => {
@@ -107,13 +95,9 @@ describe('Given a user logged in github', () => {
           const expectedMd5 = '0e62b07144b4fa997eedb864ff93e26b';
           let fileContent;
 
-          before(() => {
-            const downloadReadmeQuery = agent.get(readme.download_url)
-              .then((response) => {
-                fileContent = response.text;
-              });
-
-            return downloadReadmeQuery;
+          before(async () => {
+            const downloadReadmeQuery = await agent.get(readme.download_url);
+            fileContent = downloadReadmeQuery.text;
           });
 
           it('then the file should be downloaded', () => {
