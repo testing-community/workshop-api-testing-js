@@ -212,9 +212,9 @@ En ésta sección se realizarán pruebas al API de Github, en donde se consultar
 1. Dentro de la carpeta test crear el archivo `GithubApi.Authentication.test.js`
 
     ```js
-    const agent = require('superagent');
-    const statusCode = require('http-status-codes');
+    const { StatusCodes } = require('http-status-codes');
     const { expect } = require('chai');
+    const axios = require('axios');
 
     const urlBase = 'https://api.github.com';
     const githubUserName = 'AgileTestingColombia';
@@ -223,12 +223,14 @@ En ésta sección se realizarán pruebas al API de Github, en donde se consultar
     describe('Github Api Test', () => {
       describe('Authentication', () => {
         it('Via OAuth2 Tokens by Header', async () => {
-          const response = await agent.get(`${urlBase}/repos/${githubUserName}/${repository}`)
-            .auth('token', process.env.ACCESS_TOKEN)
-            .set('User-Agent', 'agent');
+          const response = await axios.get(`${urlBase}/repos/${githubUserName}/${repository}`, {
+            headers: {
+              Authorization: `token ${process.env.ACCESS_TOKEN}`
+            }
+          });
 
-          expect(response.status).to.equal(statusCode.OK);
-          expect(response.body.description).equal('This is a Workshop about Api Testing in JavaScript');
+          expect(response.status).to.equal(StatusCodes.OK);
+          expect(response.data.description).equal('This is a Workshop about Api Testing in JavaScript');
         });
       });
     });
@@ -236,32 +238,37 @@ En ésta sección se realizarán pruebas al API de Github, en donde se consultar
 
 1. Reemplazar el valor de githubUserName por su usuario de Github.
 1. Reemplazar el valor de repository por el nombre del repositorio
-1. Establecer la variable de entorno **ACCESS_TOKEN** con el valor del token de acceso.
+1. Establecer la variable de entorno **ACCESS_TOKEN** insertando lo siguiente en la consola con el valor del token de acceso
 
     ```bash
     export ACCESS_TOKEN=token_de_acceso
     ```
-
+    Este paso es necesario realizarlo cada vez que se inicie el computador. Existen otras opciones para la configuración de variables de entorno como hacerlo a través de un [archivo de configuración](https://www.twilio.com/blog/working-with-environment-variables-in-node-js-html) o usando las [variables de ambiente de Windows](https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/set_1). De esta manera, la variable de entorno persistirá y no será necesario volver a configurarla
 1. Ejecutar las pruebas.
 1. Adicionar la prueba para autenticación por parámetros.
 
     ```js
-    it('Via OAuth2 Tokens by parameter', () =>
-      agent.get(`${urlBase}/repos/${githubUserName}/${repository}`)
-        .query(`access_token=${process.env.ACCESS_TOKEN}`)
-        .set('User-Agent', 'agent')
-        .then((response) => {
-          expect(response.status).to.equal(statusCode.OK);
-          expect(response.body.description).equal('This is a Workshop about Api Testing in JavaScript');
-        }));
+    it('Via OAuth2 Tokens by parameter', async () => {
+      const response = await axios.get(
+        `${urlBase}/repos/${githubUserName}/${repository}`,
+        { access_token: process.env.ACCESS_TOKEN }
+      );
+
+      expect(response.status).to.equal(StatusCodes.OK);
+      expect(response.data.description).equal('This is a Workshop about Api Testing in JavaScript');
+    });
     ```
 
-1. Encriptar la variable **ACCESS_TOKEN** en travis. Debe instalar localmente travis-cli
+1. Ir a la configuración del repositorio > secrets > actions
+1. Agregar la variable **ACCESS_TOKEN** como una variable del repositorio con su respectivo valor
+1. Editar el archivo de ejecución del CI **continuous-integration.yml** y agregar la variable en el step de nombre **Run tests**, de tal modo que quede de la siguiente manera:
 
-    ```bash
-    travis encrypt ACCESS_TOKEN="your-access-token" --add --org
+    ```yml
+    - name: Run tests
+      env:
+        ACCESS_TOKEN: ${{secrets.ACCESS_TOKEN}}
+      run: npm test
     ```
-
 1. Subir los cambios a GitHub, crear un PR y solicitar revisión
 
 ### Consumiendo Métodos GET
@@ -270,7 +277,7 @@ En esta sesión se automatizarán algunas pruebas utilizando métodos GET de la 
 
 1. Crear el archivo `GithubApi.Repositories.test.js` y dentro de él hacer el resto de pasos
 1. Consumir el servicio `https://api.github.com/users/aperdomob` y comprobar el nombre, la compañía y la ubicación del usuario
-1. Obtener la lista de los repositorios por medio de hypermedia, y busque un repositorio con el nombre **jasmine-awesome-report** sobre ese repositorio verifique el nombre completo del repositorio, si es privado, y la descripción del repositorio. Utilice el método `find` para encontrar el repositorio que busca <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find>
+1. Obtener la lista de los repositorios por medio de hypermedia, y busque un repositorio con el nombre **jasmine-json-report** sobre ese repositorio verifique el nombre completo del repositorio, si es privado, y la descripción del repositorio. Utilice el método `find` para encontrar el repositorio que busca <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find>
 1. Descargue el repositorio en un zip y compruebe que descargó de forma adecuada. Aproveche la hypermedia de las anteriores respuesta para formar la url de descarga
 1. Obtenga la lista de archivos del repositorio y encuentre el Archivo README.md compruebe su nombre, path y su sha. Use el método containtSubset de chai-subset
 1. Por último, descargue el archivo README.md con ayuda del hypermedia y compruebe su md5
