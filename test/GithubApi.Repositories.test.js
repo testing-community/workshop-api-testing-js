@@ -1,4 +1,4 @@
-const agent = require('superagent');
+const axios = require('axios');
 const chai = require('chai');
 const md5 = require('md5');
 
@@ -15,11 +15,13 @@ describe('Given a user logged in github', () => {
     let user;
 
     before(async () => {
-      const userQueryResponse = await agent.get(`${urlBase}/users/${username}`)
-        .auth('token', process.env.ACCESS_TOKEN)
-        .set('User-Agent', 'agent');
+      const userQueryResponse = await axios.get(`${urlBase}/users/${username}`, {
+        headers: {
+          Authorization: `token ${process.env.ACCESS_TOKEN}`
+        }
+      });
 
-      user = userQueryResponse.body;
+      user = userQueryResponse.data;
     });
 
     it('then the user should be loaded', () => {
@@ -34,11 +36,13 @@ describe('Given a user logged in github', () => {
       const expectedRepository = 'jasmine-json-report';
 
       before(async () => {
-        const repositoriesQueryResponse = await agent.get(user.repos_url)
-          .auth('token', process.env.ACCESS_TOKEN)
-          .set('User-Agent', 'agent');
+        const repositoriesQueryResponse = await axios.get(user.repos_url, {
+          headers: {
+            Authorization: `token ${process.env.ACCESS_TOKEN}`
+          }
+        });
 
-        repositories = repositoriesQueryResponse.body;
+        repositories = repositoriesQueryResponse.data;
         repository = repositories.find((repo) => repo.name === expectedRepository);
       });
 
@@ -54,12 +58,13 @@ describe('Given a user logged in github', () => {
         let zip;
 
         before(async () => {
-          const downloadQueryResponse = await agent.get(`${repository.svn_url}/archive/${repository.default_branch}.zip`)
-            .auth('token', process.env.ACCESS_TOKEN)
-            .set('User-Agent', 'agent')
-            .buffer(true);
-
-          zip = downloadQueryResponse.text;
+          const downloadQueryResponse = await axios
+            .get(`${repository.svn_url}/archive/${repository.default_branch}.zip`, {
+              headers: {
+                Authorization: `token ${process.env.ACCESS_TOKEN}`
+              }
+            });
+          zip = downloadQueryResponse.data;
         });
 
         it('then the repository should be downloaded', () => {
@@ -78,11 +83,14 @@ describe('Given a user logged in github', () => {
         let readme;
 
         before(async () => {
-          const readmeFileQueryResponse = await agent.get(`${repository.url}/contents`)
-            .auth('token', process.env.ACCESS_TOKEN)
-            .set('User-Agent', 'agent');
+          const readmeFileQueryResponse = await axios
+            .get(`${repository.url}/contents`, {
+              headers: {
+                Authorization: `token ${process.env.ACCESS_TOKEN}`
+              }
+            });
 
-          files = readmeFileQueryResponse.body;
+          files = readmeFileQueryResponse.data;
           readme = files.find((file) => file.name === 'README.md');
         });
 
@@ -96,8 +104,8 @@ describe('Given a user logged in github', () => {
           let fileContent;
 
           before(async () => {
-            const downloadReadmeQuery = await agent.get(readme.download_url);
-            fileContent = downloadReadmeQuery.text;
+            const downloadReadmeQuery = await axios.get(readme.download_url);
+            fileContent = downloadReadmeQuery.data;
           });
 
           it('then the file should be downloaded', () => {
