@@ -298,7 +298,7 @@ En esta sesión crearemos un issue in github con un título, posteriormente modi
 1. Crear el archivo GithubApi.Issue.test.js y dentro de este, codificar los cambios necesarios para los pasos siguientes
 1. Obtendremos el usuario logueado mediante el consumo del del servicio `https://api.github.com/user` y verificaremos que tenga al menos un repositorio público
 1. Obtendremos la lista de todos los repositorios como ya lo habíamos hecho anteriormente. De todos los repositorios seleccionaremos uno cualquiera y agregamos una verificación que el repositorio exista.
-1. A partir del usuario y el nombre del repositorio construimos la url que nos permita crear un issue que contenga solamente un título mediante un método post la estructura de la url es `https://api.github.com/repos/${username}/${repositoryName}/issues`. Verificamos que el título corresponda y que el cuerpo no contenga contenido
+1. A partir del usuario y el nombre del repositorio construimos la url que nos permita crear un issue que contenga solamente un título mediante un método POST la estructura de la url es `https://api.github.com/repos/${username}/${repositoryName}/issues`. Verificamos que el título corresponda y que el cuerpo no contenga contenido
 1. Modifique el issue agregandole un cuerpo mediante un método PATCH la url usando la url `https://api.github.com/repos/${username}/${repositoryName}/issues/{issueNumber}` verifique que el título no haya cambiado y que contenga el nuevo cuerpo
 
 ### Consumiendo un DELETE y un recurso inexistente
@@ -315,25 +315,16 @@ Se creará un gist posteriormente se verificará que exista. Luego se eliminará
 
 se consumirá por medio de un **HEAD** un repositorio el cual fue cambiado de nombre para verificar el redireccionamiento. Posteriormente se consumirá con un **GET** el repositorio que se renombró con el fin de validar que redireccione de forma adecuada.
 
-1. Crear el archivo `GithubApi.Redirect.js` y dentro de dentro de este, codificar los cambios necesarios para los pasos siguientes
+1. Crear el archivo `GithubApi.Redirect.test.js` y dentro de dentro de este, codificar los cambios necesarios para los pasos siguientes
 1. Consultar con el método `HEAD` la url `https://github.com/aperdomob/redirect-test` y comprobar que tenga la redirección a la url `https://github.com/aperdomob/new-redirect-test`
 1. Consultar con el método GET la url <https://github.com/aperdomob/redirect-test> y verificar que redireccione de forma correcta
-
-### Tiempos de Respuesta
-
-En esta ocasión se hará una prueba en la cual se consultará todos los usuarios de github y se validará que no exceda un tiempo en obtener la respuesta
-
-1. Instalar la dependencia de desarrollo `superagent-response-time`
-1. Crear el archivo `GithubApi.Users.test.js` y dentro de él hacer el resto de pasos
-1. Realizar una prueba que traiga todos los usuarios y compruebe que el tiempo de respuesta sea menor a 5 segundos (utilice la librería que instalo)
-
 ### Query parameters
 
-En esta sesión se enviará query parameters para poder obtener más o menos cantidad de datos en una consulta **get**.
+En esta sesión se enviará query parameters para poder obtener más o menos cantidad de datos en una consulta **GET**.
 
 1. Modificar el archivo `GithubApi.Users.test.js` agregando una prueba de cuantos usuarios trae por defecto.
 1. Agregar una prueba que obtenga 10 usuarios y verificar que efectivamente traiga 10 usuarios.
-1. Agregar una prueba que obtenga 50 usuarios y verificar que efectivamente traiga 50 usuarios.
+1. Agregar una prueba que obtenga 100 usuarios y verificar que efectivamente traiga 100 usuarios.
 
 ### Validación de Esquemas
 
@@ -342,7 +333,7 @@ En muchas ocasiones debemos verificar que la respuesta que entrega debe cumplir 
 1. Cree el archivo GithubApi.Contract.test.js con el siguiente contenido
 
     ```js
-    const agent = require('superagent');
+    const axios = require('axios');
     const chai = require('chai');
     const { listPublicEventsSchema } = require('./schema/ListPublicEvents.schema');
 
@@ -356,10 +347,11 @@ En muchas ocasiones debemos verificar que la respuesta que entrega debe cumplir 
         let response;
 
         before(async () => {
-          response = await agent
-            .get(`${urlBase}/events`)
-            .set('User-Agent', 'agent')
-            .auth('token', process.env.ACCESS_TOKEN);
+          response = await axios.get(`${urlBase}/events`, {
+            headers: {
+              Authorization: `token ${process.env.ACCESS_TOKEN}`
+            }
+          });
         });
 
         it('then the body should have a schema', () => expect(response).to.be.jsonSchema(listPublicEventsSchema));

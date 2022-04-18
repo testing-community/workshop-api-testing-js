@@ -1,4 +1,4 @@
-const agent = require('superagent');
+const axios = require('axios');
 const chai = require('chai');
 const { listPublicEventsSchema } = require('./schema/ListPublicEvents.schema');
 
@@ -12,10 +12,11 @@ describe('Given event Github API resources', () => {
     let response;
 
     before(async () => {
-      response = await agent
-        .get(`${urlBase}/events`)
-        .set('User-Agent', 'agent')
-        .auth('token', process.env.ACCESS_TOKEN);
+      response = await axios.get(`${urlBase}/events`, {
+        headers: {
+          Authorization: `token ${process.env.ACCESS_TOKEN}`
+        }
+      });
     });
 
     it('then the body should have a schema', () => expect(response).to.be.jsonSchema(listPublicEventsSchema));
