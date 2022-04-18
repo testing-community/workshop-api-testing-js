@@ -313,10 +313,10 @@ Se creará un gist posteriormente se verificará que exista. Luego se eliminará
 
 ### Consumiendo HEAD y redireccionando peticiones
 
-se consumirá por medio de un head un repositorio el cual fue cambiado de nombre para obtener el código de respuesta de redireccionamiento y adicionalmente ver la url a la que debería redireccionar. Posteriormente se consumirá con un **GET** el repositorio que se renombró con el fin de validar que redireccione de forma adecuada.
+se consumirá por medio de un **HEAD** un repositorio el cual fue cambiado de nombre para verificar el redireccionamiento. Posteriormente se consumirá con un **GET** el repositorio que se renombró con el fin de validar que redireccione de forma adecuada.
 
 1. Crear el archivo `GithubApi.Redirect.js` y dentro de dentro de este, codificar los cambios necesarios para los pasos siguientes
-1. Consultar con el método `HEAD` la url `https://github.com/aperdomob/redirect-test` y comprobar el código de estado 301 y que tenga la redirección a la url `https://github.com/aperdomob/new-redirect-test`
+1. Consultar con el método `HEAD` la url `https://github.com/aperdomob/redirect-test` y comprobar que tenga la redirección a la url `https://github.com/aperdomob/new-redirect-test`
 1. Consultar con el método GET la url <https://github.com/aperdomob/redirect-test> y verificar que redireccione de forma correcta
 
 ### Tiempos de Respuesta
