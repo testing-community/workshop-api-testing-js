@@ -1,34 +1,37 @@
-const agent = require('superagent');
-const statusCode = require('http-status-codes');
+const axios = require('axios');
+const { StatusCodes } = require('http-status-codes');
 const { expect, assert } = require('chai');
 
 describe('Given a user github logged', () => {
   const urlBase = 'https://api.github.com';
-  const username = 'germandavid85';
+  const username = 'aperdomob';
 
   describe('when wanna follow a user', () => {
     let followQueryResponse;
 
     before(async () => {
-      followQueryResponse = await agent.put(`${urlBase}/user/following/${username}`)
-        .set('User-Agent', 'agent')
-        .auth('token', process.env.ACCESS_TOKEN);
+      followQueryResponse = await axios.put(`${urlBase}/user/following/${username}`, {}, {
+        headers: {
+          Authorization: `token ${process.env.ACCESS_TOKEN}`
+        }
+      });
     });
 
     it('then should be a response', () => {
-      expect(followQueryResponse.status).to.eql(statusCode.NO_CONTENT);
-      expect(followQueryResponse.body).to.eql({});
+      expect(followQueryResponse.status).to.eql(StatusCodes.NO_CONTENT);
+      expect(followQueryResponse.data).to.eql('');
     });
 
     describe('when wanna know who follow', () => {
       let user;
 
       before(async () => {
-        const response = await agent.get(`${urlBase}/user/following`)
-          .auth('token', process.env.ACCESS_TOKEN)
-          .set('User-Agent', 'agent');
-
-        user = response.body.find((list) => list.login === username);
+        const response = await axios.get(`${urlBase}/user/following`, {
+          headers: {
+            Authorization: `token ${process.env.ACCESS_TOKEN}`
+          }
+        });
+        user = response.data.find((list) => list.login === username);
       });
 
       it(`then should be followed to ${username}`, () => assert.exists(user));
@@ -38,25 +41,28 @@ describe('Given a user github logged', () => {
       let followUserAgainQueryResponse;
 
       before(async () => {
-        followUserAgainQueryResponse = await agent.put(`${urlBase}/user/following/${username}`)
-          .set('User-Agent', 'agent')
-          .auth('token', process.env.ACCESS_TOKEN);
+        followUserAgainQueryResponse = await axios.put(`${urlBase}/user/following/${username}`, {}, {
+          headers: {
+            Authorization: `token ${process.env.ACCESS_TOKEN}`
+          }
+        });
       });
 
       it('then verify the method is idempotent', () => {
-        expect(followUserAgainQueryResponse.status).to.eql(statusCode.NO_CONTENT);
-        expect(followUserAgainQueryResponse.body).to.eql({});
+        expect(followUserAgainQueryResponse.status).to.eql(StatusCodes.NO_CONTENT);
+        expect(followUserAgainQueryResponse.data).to.eql('');
       });
 
       describe('when wanna know who follow', () => {
         let user;
 
         before(async () => {
-          const userFollowQuery = await agent.get(`${urlBase}/user/following`)
-            .set('User-Agent', 'agent')
-            .auth('token', process.env.ACCESS_TOKEN);
-
-          user = userFollowQuery.body.find((list) => list.login === username);
+          const userFollowQuery = await axios.get(`${urlBase}/user/following`, {
+            headers: {
+              Authorization: `token ${process.env.ACCESS_TOKEN}`
+            }
+          });
+          user = userFollowQuery.data.find((list) => list.login === username);
         });
 
         it(`then should be followed to ${username}`, () => assert.exists(user));

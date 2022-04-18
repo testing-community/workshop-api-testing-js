@@ -1,6 +1,6 @@
-const agent = require('superagent');
+const axios = require('axios');
 const chai = require('chai');
-const statusCode = require('http-status-codes');
+const { StatusCodes } = require('http-status-codes');
 
 chai.use(require('chai-subset'));
 
@@ -33,16 +33,17 @@ describe('Given a github user', () => {
     let newGistQueryResponse;
 
     before(async () => {
-      newGistQueryResponse = await agent
-        .post(`${urlBase}/gists`, createGist)
-        .set('User-Agent', 'agent')
-        .auth('token', process.env.ACCESS_TOKEN);
+      newGistQueryResponse = await axios.post(`${urlBase}/gists`, createGist, {
+        headers: {
+          Authorization: `token ${process.env.ACCESS_TOKEN}`
+        }
+      });
 
-      gist = newGistQueryResponse.body;
+      gist = newGistQueryResponse.data;
     });
 
     it('then a new gist should be created', () => {
-      expect(newGistQueryResponse.status).to.equal(statusCode.CREATED);
+      expect(newGistQueryResponse.status).to.equal(StatusCodes.CREATED);
       expect(gist).to.containSubset(createGist);
     });
 
@@ -50,25 +51,27 @@ describe('Given a github user', () => {
       let gistQueryResponse;
 
       before(async () => {
-        gistQueryResponse = await agent
-          .get(gist.url)
-          .set('User-Agent', 'agent')
-          .auth('token', process.env.ACCESS_TOKEN);
+        gistQueryResponse = await axios.get(gist.url, {
+          headers: {
+            Authorization: `token ${process.env.ACCESS_TOKEN}`
+          }
+        });
       });
 
-      it('then the Gits should be accessible', () => expect(gistQueryResponse.status).to.equal(statusCode.OK));
+      it('then the Gits should be accessible', () => expect(gistQueryResponse.status).to.equal(StatusCodes.OK));
 
       describe('when delete a gist', () => {
         let deleteGistQuery;
 
         before(async () => {
-          deleteGistQuery = await agent
-            .del(gist.url)
-            .set('User-Agent', 'agent')
-            .auth('token', process.env.ACCESS_TOKEN);
+          deleteGistQuery = await axios.delete(gist.url, {
+            headers: {
+              Authorization: `token ${process.env.ACCESS_TOKEN}`
+            }
+          });
         });
 
-        it('then the gist should be deleted', () => expect(deleteGistQuery.status).to.equal(statusCode.NO_CONTENT));
+        it('then the gist should be deleted', () => expect(deleteGistQuery.status).to.equal(StatusCodes.NO_CONTENT));
       });
 
       describe('and try to get the delete gist', () => {
@@ -76,17 +79,18 @@ describe('Given a github user', () => {
 
         before(async () => {
           try {
-            await agent
-              .get(gist.url)
-              .set('User-Agent', 'agent')
-              .auth('token', process.env.ACCESS_TOKEN);
+            await axios.get(gist.url, {
+              headers: {
+                Authorization: `token ${process.env.ACCESS_TOKEN}`
+              }
+            });
           } catch (response) {
-            responseStatus = response.status;
+            responseStatus = response.response.status;
           }
         });
 
         it('then the Gits should not be accessible', () => {
-          expect(responseStatus).to.equal(statusCode.NOT_FOUND);
+          expect(responseStatus).to.equal(StatusCodes.NOT_FOUND);
         });
       });
     });

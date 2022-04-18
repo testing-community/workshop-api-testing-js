@@ -1,4 +1,4 @@
-const agent = require('superagent');
+const axios = require('axios');
 const { expect } = require('chai');
 
 const urlBase = 'https://api.github.com';
@@ -7,11 +7,13 @@ describe('Given an authenticate github user', () => {
   let user;
 
   before(async () => {
-    const response = await agent.get(`${urlBase}/user`)
-      .auth('token', process.env.ACCESS_TOKEN)
-      .set('User-Agent', 'agent');
+    const response = await axios.get(`${urlBase}/user`, {
+      headers: {
+        Authorization: `token ${process.env.ACCESS_TOKEN}`
+      }
+    });
 
-    user = response.body;
+    user = response.data;
   });
 
   it('then should have repositories', () => {
@@ -22,12 +24,14 @@ describe('Given an authenticate github user', () => {
     let firstRepository;
 
     before(async () => {
-      const response = await agent.get(user.repos_url)
-        .auth('token', process.env.ACCESS_TOKEN)
-        .set('User-Agent', 'agent');
+      const response = await axios.get(user.repos_url, {
+        headers: {
+          Authorization: `token ${process.env.ACCESS_TOKEN}`
+        }
+      });
 
-      const { body } = response;
-      firstRepository = body.shift();
+      const { data } = response;
+      firstRepository = data.shift();
     });
 
     it('then should have some repository', () => {
@@ -40,11 +44,13 @@ describe('Given an authenticate github user', () => {
       let issue;
 
       before(async () => {
-        const response = await agent.post(`${urlBase}/repos/${user.login}/${firstRepository.name}/issues`, newIssue)
-          .auth('token', process.env.ACCESS_TOKEN)
-          .set('User-Agent', 'agent');
+        const response = await axios.post(`${urlBase}/repos/${user.login}/${firstRepository.name}/issues`, newIssue, {
+          headers: {
+            Authorization: `token ${process.env.ACCESS_TOKEN}`
+          }
+        });
 
-        issue = response.body;
+        issue = response.data;
       });
 
       it('then the issue should be created', () => {
@@ -57,11 +63,13 @@ describe('Given an authenticate github user', () => {
         let modifiedIssue;
 
         before(async () => {
-          const response = await agent.patch(`${urlBase}/repos/${user.login}/${firstRepository.name}/issues/${issue.number}`, updateIssue)
-            .auth('token', process.env.ACCESS_TOKEN)
-            .set('User-Agent', 'agent');
+          const response = await axios.patch(`${urlBase}/repos/${user.login}/${firstRepository.name}/issues/${issue.number}`, updateIssue, {
+            headers: {
+              Authorization: `token ${process.env.ACCESS_TOKEN}`
+            }
+          });
 
-          modifiedIssue = response.body;
+          modifiedIssue = response.data;
         });
 
         it('then add the body', () => {
