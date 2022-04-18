@@ -24,14 +24,14 @@ describe('Given a user logged in github', () => {
 
     it('then the user should be loaded', () => {
       expect(user.name).to.equal('Alejandro Perdomo');
-      expect(user.company).to.equal('PSL');
+      expect(user.company).to.equal('Perficient Latam');
       expect(user.location).to.equal('Colombia');
     });
 
     describe('when get his repositories', () => {
       let repositories;
       let repository;
-      const expectedRepository = 'jasmine-awesome-report';
+      const expectedRepository = 'jasmine-json-report';
 
       before(async () => {
         const repositoriesQueryResponse = await agent.get(user.repos_url)
@@ -39,14 +39,14 @@ describe('Given a user logged in github', () => {
           .set('User-Agent', 'agent');
 
         repositories = repositoriesQueryResponse.body;
-        repository = repositories.find(repo => repo.name === expectedRepository);
+        repository = repositories.find((repo) => repo.name === expectedRepository);
       });
 
       it(`then should have ${expectedRepository} repository`, () => {
         assert.exists(repository);
-        expect(repository.full_name).to.equal('aperdomob/jasmine-awesome-report');
+        expect(repository.full_name).to.equal('aperdomob/jasmine-json-report');
         expect(repository.private).to.equal(false);
-        expect(repository.description).to.equal('An awesome html report for Jasmine');
+        expect(repository.description).to.equal('A Simple Jasmine JSON Report');
       });
 
       describe('when download main branch', () => {
@@ -71,7 +71,7 @@ describe('Given a user logged in github', () => {
         const format = {
           name: 'README.md',
           path: 'README.md',
-          sha: 'b9900ca9b34077fe6a8f2aaa37a173824fa9751d'
+          sha: '360eee6c223cee31e2a59632a2bb9e710a52cdc0'
         };
 
         let files;
@@ -83,7 +83,7 @@ describe('Given a user logged in github', () => {
             .set('User-Agent', 'agent');
 
           files = readmeFileQueryResponse.body;
-          readme = files.find(file => file.name === 'README.md');
+          readme = files.find((file) => file.name === 'README.md');
         });
 
         it('then should have README.md file', () => {
@@ -92,7 +92,7 @@ describe('Given a user logged in github', () => {
         });
 
         describe('when get the file content', () => {
-          const expectedMd5 = '0e62b07144b4fa997eedb864ff93e26b';
+          const expectedMd5 = '497eb689648cbbda472b16baaee45731';
           let fileContent;
 
           before(async () => {

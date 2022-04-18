@@ -28,7 +28,7 @@ describe('Given a user github logged', () => {
           .auth('token', process.env.ACCESS_TOKEN)
           .set('User-Agent', 'agent');
 
-        user = response.body.find(list => list.login === username);
+        user = response.body.find((list) => list.login === username);
       });
 
       it(`then should be followed to ${username}`, () => assert.exists(user));
@@ -56,7 +56,7 @@ describe('Given a user github logged', () => {
             .set('User-Agent', 'agent')
             .auth('token', process.env.ACCESS_TOKEN);
 
-          user = userFollowQuery.body.find(list => list.login === username);
+          user = userFollowQuery.body.find((list) => list.login === username);
         });
 
         it(`then should be followed to ${username}`, () => assert.exists(user));

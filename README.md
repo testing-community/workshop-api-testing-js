@@ -9,6 +9,7 @@ This is a Workshop about Api Testing in JavaScript
 En esta primera parte se creará un proyecto node desde 0 y se configurará la primera prueba utilizando mocha. Adicionalmente este proyecto se montará en Github
 
 1. Crear un repositorio en GitHub con el nombre de `workshop-api-testing-js`
+1. Agregar al repositorio la siguiente descripción: `This is a Workshop about Api Testing in JavaScript`
 1. Seguir las instrucciones para realizar el primer commit
 1. En la configuración del repositorio de GitHub en la opción Branches proteja la rama `Master` indicando que los PR requieran revisión antes de mergear y que requiera la comprobación del estado antes de hacer merge
 1. Dentro del menu colaboradores agregar a:
@@ -57,7 +58,7 @@ En esta primera parte se creará un proyecto node desde 0 y se configurará la p
 
 ### Primera Prueba de API
 
-En esta sesión, crearemos las primeras pruebas consumiendo de distintas formas servicios API Rest. Utilizaremos una librería cliente llamada **superagent** y otra que contiene un enumerador de los principales códigos de respuesta.
+En esta sesión, crearemos las primeras pruebas consumiendo de distintas formas servicios API Rest. Utilizaremos una librería cliente llamada **axios** y otra que contiene un enumerador de los principales códigos de respuesta.
 
 1. Crear una nueva rama a partir de master: `git checkout -b <new-branch>`
 1. Instalar las dependencia de desarrollo **http-status-codes**
@@ -66,20 +67,18 @@ En esta sesión, crearemos las primeras pruebas consumiendo de distintas formas 
     npm install --save-dev http-status-codes
     ```
 
-1. Instalar la dependencias **superagent** y **superagent-promise**. (Tenga en cuenta que estas no son de desarrollo)
+1. Instalar la dependencia **axios**. (Tenga en cuenta que esta no es de desarrollo)
 
     ```sh
-    npm install --save superagent superagent-promise
+    npm install --save axios
     ```
 
 1. Dentro de la carpeta test crear el archivo `MyFirstApiConsume.test.js`
 
     ```js
-    const agent = require('superagent');
-    const statusCode = require('http-status-codes');
-    const chai = require('chai');
-
-    const expect = chai.expect;
+    const axios = require('axios');
+    const { expect } = require('chai');
+    const { StatusCodes } = require('http-status-codes');
 
     describe('First Api Tests', () => {
     });
@@ -89,10 +88,10 @@ En esta sesión, crearemos las primeras pruebas consumiendo de distintas formas 
 
     ```js
     it('Consume GET Service', async () => {
-      const response = await agent.get('https://httpbin.org/ip');
+      const response = await axios.get('https://httpbin.org/ip');
 
-      expect(response.status).to.equal(statusCode.OK);
-      expect(response.body).to.have.property('origin');
+      expect(response.status).to.equal(StatusCodes.OK);
+      expect(response.data).to.have.property('origin');
     });
     ```
 
@@ -106,48 +105,55 @@ En esta sesión, crearemos las primeras pruebas consumiendo de distintas formas 
         city: 'New York'
       };
 
-      const response = await agent.get('https://httpbin.org/get').query(query);
+      const response = await axios.get('https://httpbin.org/get', { query });
 
-      expect(response.status).to.equal(statusCode.OK);
-      expect(response.body.args).to.eql(query);
+      expect(response.status).to.equal(StatusCodes.OK);
+      expect(response.config.query).to.eql(query);
     });
     ```
 
 1. Ejecutar las pruebas.
-1. Agregar pruebas consumiendo servicios **HEAD**, **PATCH**, **PUT**, **DELETE** (Utilice <https://httpbin.org/> para encontrar los servicios) y (la documentación de [superagent](http://visionmedia.github.io/superagent/))
+1. Agregar pruebas consumiendo servicios **HEAD**, **PATCH**, **PUT**, **DELETE**. Utilice <https://httpbin.org/> para encontrar los servicios y la documentación de [axios](https://axios-http.com/docs/intro)
 1. Elimine el archivo `test/HelloWord.test.js`
 1. Haga commit y push de los cambios, creen un PR y solicite la revisión. Una vez aprobado haga merge con master
 
 ### Integración Continua
 
-En esta sesión se configurará la integración continua con travis, adicionalmente se activará dentro de github una validación que sólo permita realizar merge si la integración continua ha pasado. Y por último se configurará mocha para que haga una espera mucho más grande por la ejecución de las pruebas ya que algunos request pueden tomar más de 2 segundos.
+En esta sesión se configurará la integración continua con Github Actions, adicionalmente se activará dentro de github una validación que sólo permita realizar merge si la integración continua ha pasado. Y por último se configurará mocha para que haga una espera mucho más grande por la ejecución de las pruebas ya que algunos request pueden tomar más de 2 segundos.
 
-1. Crear el archivo `.travis.yml` en la raíz del proyecto
+1. Ir a la opción Actions del repositorio
+1. Buscar el action de Node.js y darle a configurar, esto lo llevará a editar el action
 1. Agregar el siguiente contenido
 
     ```yaml
-    language: node_js
-    cache:
-    directories:
-    - node_modules
-    notifications:
-    email: false
-    branches:
-    except:
-    - "/^v\\d+\\.\\d+\\.\\d+$/"
+    name: Node.js CI
+    on:
+      push:
+        branches: [ main ]
+      pull_request:
+        branches: [ main ]
+    jobs:
+      build:
+        runs-on: ubuntu-latest
+        steps:
+        - uses: actions/checkout@v3
+        - name: Use Node.js 16.x
+          uses: actions/setup-node@v3
+          with:
+            node-version: 16.x
+            cache: 'npm'
+        - run: npm ci
+        - run: npm run build --if-present
+        - name: Run tests
+          run: npm test
     ```
 
-1. Habilitar en Travis en el repositorio <https://docs.travis-ci.com/user/getting-started/>
-1. Crear el archivo `.nvmrc` con el siguiente contenido
 
-    ``` shell
-    v10.16.0
-    ```
 
 1. Modifique el script de **test** del package.json agregando al final `-t 5000`
 1. Cree un PR
-1. Verificar que la ejecución en Travis termine correctamente
-1. Ir a la configuración del repositorio y modifique el branch protegido master activando travis como requerido
+1. Verificar que la ejecución del action termine correctamente
+1. Ir a la configuración del repositorio y modifique el branch protegido master activando github actions como requerido
 1. Solicite revisión del PR
 
 ### Reporte de Pruebas
