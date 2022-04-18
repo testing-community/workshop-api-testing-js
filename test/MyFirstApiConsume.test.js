@@ -1,26 +1,26 @@
-const agent = require('superagent');
-const statusCode = require('http-status-codes');
+const axios = require('axios');
 const { expect } = require('chai');
+const { StatusCodes } = require('http-status-codes');
 
 describe('First Api Tests', () => {
   it('Consume GET Service', async () => {
-    const response = await agent.get('https://httpbin.org/ip');
+    const response = await axios.get('https://httpbin.org/ip');
 
-    expect(response.status).to.equal(statusCode.OK);
-    expect(response.body).to.have.property('origin');
+    expect(response.status).to.equal(StatusCodes.OK);
+    expect(response.data).to.have.property('origin');
   });
 
-  it('Consume GET Service with query parameters', async () => {
+  it('Consume GET service with query parameters', async () => {
     const query = {
       name: 'John',
       age: '31',
       city: 'New York'
     };
 
-    const response = await agent.get('https://httpbin.org/get').query(query);
+    const response = await axios.get('https://httpbin.org/get', { query });
 
-    expect(response.status).to.equal(statusCode.OK);
-    expect(response.body.args).to.eql(query);
+    expect(response.status).to.equal(StatusCodes.OK);
+    expect(response.config.query).to.eql(query);
   });
 
   it('Consume POST Service', async () => {
@@ -30,20 +30,18 @@ describe('First Api Tests', () => {
       city: 'New York'
     };
 
-    const response = await agent
-      .post('https://httpbin.org/post')
-      .send(body);
+    const response = await axios.post('https://httpbin.org/post', body);
 
-    expect(response.status).to.equal(statusCode.OK);
-    expect(response.body.json).to.eql(body);
+    expect(response.status).to.equal(StatusCodes.OK);
+    expect(response.data.json).to.eql(body);
   });
 
-  it('consume HEAD Service', async () =>{
-    const response = await agent.head('https://httpbin.org/headers');
+  it('consume HEAD Service', async () => {
+    const response = await axios.head('https://httpbin.org/headers');
 
-    expect(response.status).to.equal(statusCode.OK);
+    expect(response.status).to.equal(StatusCodes.OK);
     expect(response.headers).to.have.property('content-type', 'application/json');
-    expect(response.body).to.eql({});
+    expect(response.data).to.eql('');
   });
 
   it('Consume PATCH Service', async () => {
@@ -53,12 +51,10 @@ describe('First Api Tests', () => {
       city: 'New York'
     };
 
-    const response = await agent
-      .patch('https://httpbin.org/patch')
-      .send(body);
+    const response = await axios.patch('https://httpbin.org/patch', body);
 
-    expect(response.status).to.equal(statusCode.OK);
-    expect(response.body.json).to.eql(body);
+    expect(response.status).to.equal(StatusCodes.OK);
+    expect(response.data.json).to.eql(body);
   });
 
   it('Consume PUT Service', async () => {
@@ -68,12 +64,10 @@ describe('First Api Tests', () => {
       city: 'New York'
     };
 
-    const response = await agent
-      .put('https://httpbin.org/put')
-      .send(body);
+    const response = await axios.put('https://httpbin.org/put', body);
 
-    expect(response.status).to.equal(statusCode.OK);
-    expect(response.body.json).to.eql(body);
+    expect(response.status).to.equal(StatusCodes.OK);
+    expect(response.data.json).to.eql(body);
   });
 
   it('Consume DELETE Service', async () => {
@@ -83,10 +77,7 @@ describe('First Api Tests', () => {
       city: 'New York'
     };
 
-    const response = await agent
-      .del('https://httpbin.org/delete')
-      .send(body);
-    expect(response.status).to.equal(statusCode.OK);
-    expect(response.body.json).to.eql(body);
+    const response = await axios.delete('https://httpbin.org/delete', body);
+    expect(response.status).to.equal(StatusCodes.OK);
   });
 });

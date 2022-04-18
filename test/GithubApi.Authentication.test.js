@@ -17,10 +17,9 @@ describe('Github Api Test', () => {
       expect(response.body.description).equal('This is a Workshop about Api Testing in JavaScript');
     });
 
-    it('Via OAuth2 Tokens by parameter', async () => {
+    it.skip('Via OAuth2 Tokens by parameter', async () => {
       const response = await agent.get(`${urlBase}/repos/${githubUserName}/${repository}`)
-        .set('User-Agent', 'agent')
-        .query(`access_token=${process.env.ACCESS_TOKEN}`)
+        .query(`access_token=${process.env.ACCESS_TOKEN}`);
 
       expect(response.status).to.equal(statusCode.OK);
       expect(response.body.description).equal('This is a Workshop about Api Testing in JavaScript');
