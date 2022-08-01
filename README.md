@@ -1,20 +1,78 @@
 # Workshop Api Testing in Javascript
+Bienvenido al Workshop de API Testing. Durante el taller exploraremos los conocimientos necesarios para construir pruebas automaticas de API usando Axios, Mocha y Chai. Durante el taller exploraremos la configuración de un proyecto desde cero, prepararlo para un proceso de integración continua por medio de Github Actions e interactuar con diferentes métodos o verbos HTTP.
+Para el desarrollo del taller usaremos [GitHub](https://github.com/) y [GitHub Flow](https://guides.github.com/introduction/flow/) para realizar la entrega de cada ejercicio practico.
 
-This is a Workshop about Api Testing in JavaScript
+Ten en cuenta tener estudiados ciertos conceptos importantes (te dejamos unos enlaces :sunglasses:):
+
+* [Git](https://www.freecodecamp.org/news/learn-the-basics-of-git-in-under-10-minutes-da548267cc91/)
+* [JavaScript](https://javascript.info/)
+
+## Tabla de contenidos
+1. [Creación y configuración del repositorio](#creación-y-configuración-del-repositorio)
+1. [Configuración inicial del proyecto](#configuración-inicial-del-proyecto)
+1. [Primera Prueba de API](#primera-prueba-de-api)
+1. [Integración Continua](#integración-continua)
+1. [Reporte de Pruebas](#reporte-de-pruebas)
+1. [Verificación de Código Estático](#verificación-de-código-estático)
+1. [Autenticación en GitHub](#autenticación-en-github)
+1. [Consumiendo Métodos GET](#consumiendo-métodos-get)
+1. [Consumiendo Métodos PUT](#consumiendo-métodos-put)
+1. [Consumiendo métodos POST y PATCH](#consumiendo-métodos-post-y-patch)
+1. [Consumiendo un DELETE y un recurso inexistente](#consumiendo-un-delete-y-un-recurso-inexistente)
+1. [Consumiendo HEAD y redireccionando peticiones](#consumiendo-head-y-redireccionando-peticiones)
+1. [Query parameters](#query-parameters)
+1. [Validación de Esquemas](#validación-de-esquemas)
+1. [Librería Alterna de Clientes](#librería-alterna-de-clientes)
+1. [Futuros Temas](#futuros-temas)
+1. [Aviso](#aviso)
 
 ## Stages
 
+### Creación y configuración del repositorio
+En esta primera parte se creará un repositorio y se realizaran las configuraciones iniciales, antes de comenzar el workshop. 
+
+1. Crear un repositorio en GitHub con el nombre de `workshop-api-testing-js` (previo requisito disponer de una cuenta en GitHub, no seleccione ninguna opcion de inicializacion de repositorio).
+1. Agregar al repositorio la siguiente descripción: `This is a Workshop about Api Testing in JavaScript`
+1. Crear localmente una carpeta con el nombre de **workshop-api-testing-js** y luego sitúese dentro de la carpeta.
+1. Crear el archivo **.gitignore** en la raíz del proyecto, luego ingrese a la página <https://www.toptal.com/developers/gitignore> y en el campo de texto digite su sistema operativo (ej: windows, osx, macos) y selecciónelo de la lista de autocompletar. Repita este paso para su entorno de desarrollo (ej:vscode, sublime, intellij, jetbrains), también agregue la palabra `node`. Presione el botón "Create" para crear el archivo que contendrá una lista de carpetas y archivos de exclusión y copie su contenido dentro del archivo **.gitignore** (es muy importante que este archivo quede bien generado, y su sombre sea .gitignore, sin ninguna extension adicional).
+1. A continuación realice el primer commit y suba los cambios a nuestro repositorio remoto de GitHub, digitando los siguientes comandos en tu consola favorita, cada linea es un comando distinto:
+
+    ```bash
+    echo "# workshop-api-testing-js" >> README.md
+    git init
+    git add README.md
+    git add .gitignore
+    git commit -m "first commit"
+    git branch -M main
+    SI USAN HTTPS USAR ESTE COMANDO -> git remote add origin https://github.com/<usuario>/workshop-api-testing-js.git
+    SI USAN SSH USAR ESTE COMANDO -> git remote add origin git@github.com:<usuario>/workshop-api-testing-js.git
+    git push -u origin main
+    ```
+
+1. Proteger la rama `main` para que los pull request requieran revisión de otros desarrolladores y se compruebe el estado de nuestros test ("ok" :heavy_check_mark: o "fallaron" :x:) antes de hacer un merge a la rama.
+
+    Ir a Settings > Branches adicionamos una regla dando click en **add rule**. Escribimos `main` en el campo de **branch name pattern**. Una vez hecho eso, damos click en las siguientes opciones:
+    ![branch rules](media/branch_protection_configuration.png)
+
+1. Dentro del menu colaboradores agregar a:
+   * [holgiosalos](https://github.com/holgiosalos)
+   * [danielgalvis98](https://github.com/danielgalvis98)
+   * [kliver98](https://github.com/kliver98)
+   * [AlejaGonzalezV](https://github.com/AlejaGonzalezV)
+   * [NicolasB2](https://github.com/NicolasB2)
+   * [manuelq12](https://github.com/manuelq12)
+   * [Valeryibarra](https://github.com/Valeryibarra)
+   * [veronicatofino](https://github.com/veronicatofino)
+
 ### Configuración inicial del proyecto
 
-En esta primera parte se creará un proyecto node desde 0 y se configurará la primera prueba utilizando mocha. Adicionalmente este proyecto se montará en Github
+En esta parte se creará un proyecto node desde 0 y se configurará la primera prueba utilizando mocha.
 
-1. Crear un repositorio en GitHub con el nombre de `workshop-api-testing-js`
-1. Agregar al repositorio la siguiente descripción: `This is a Workshop about Api Testing in JavaScript`
-1. Seguir las instrucciones para realizar el primer commit
-1. En la configuración del repositorio de GitHub en la opción Branches proteja la rama `Master` indicando que los PR requieran revisión antes de mergear y que requiera la comprobación del estado antes de hacer merge
-1. Dentro del menu colaboradores agregar a:
-   * [germandavid85](https://github.com/germandavid85)
-1. [Instalar NodeJS](https://nodejs.org/es/download/package-manager/) en su equipo si no lo tiene instalado
+1. Crear una carpeta en la raíz del proyecto llamada `.github` con un archivo llamado `CODEOWNERS` (sin extensión) con lo siguiente:
+    ```js
+    * @holgiosalos @danielgalvis98 @kliver98 @AlejaGonzalezV @NicolasB2 @manuelq12 @Valeryibarra @veronicatofino
+    ```
+1. [Instalar NodeJS](https://nodejs.org/es/download/package-manager/) en su equipo si no lo tiene instalado (version sugerida `v16.14.0`)
 1. Ejecutar en una consola `npm init` dentro de la ruta donde se encuentra el repositorio y colocar la siguiente información:
 
     | Parametro          | Valor                                              |
@@ -50,17 +108,17 @@ En esta primera parte se creará un proyecto node desde 0 y se configurará la p
     ```
 
 1. Ejecutar el comando `npm test` y comprobar que la prueba pasa de forma satisfactoria
-1. Crear el archivo **.gitignore** en la raíz del proyecto. Ingresar a la página <https://www.gitignore.io/> y en el área de texto  agregar el _sistema operativo_, _IDE's_ y _NodeJS_, ejemplo _OSX Node VisualStudioCode_. Genere el archivo y cópielo dentro del archivo **.gitignore**
 1. Crear el archivo **LICENSE** en la raíz del proyecto con lo especificado en <https://en.wikipedia.org/wiki/MIT_License> (_Tenga en cuanta cambiar el año y el copyright holders_)
+1. Crear una rama llamada `initial-setup`
 1. Realizar un `commit` donde incluya los 4 archivos modificados con el mensaje **“setup mocha configuration”** y subir los cambios al repositorio
 1. Crear un PR y esperar por la aprobación o comentarios de los revisores
-1. Una vez aprobado realizar el merge a master seleccionando la opción **“squash and merge”**.
+1. Una vez aprobado realizar el merge a main seleccionando la opción **“squash and merge”**.
 
 ### Primera Prueba de API
 
 En esta sesión, crearemos las primeras pruebas consumiendo de distintas formas servicios API Rest. Utilizaremos una librería cliente llamada **axios** y otra que contiene un enumerador de los principales códigos de respuesta.
 
-1. Crear una nueva rama a partir de master: `git checkout -b <new-branch>`
+1. Crear una nueva rama a partir de main: `git checkout -b <new-branch>`
 1. Instalar las dependencia de desarrollo **http-status-codes**
 
     ```sh
@@ -115,7 +173,7 @@ En esta sesión, crearemos las primeras pruebas consumiendo de distintas formas 
 1. Ejecutar las pruebas.
 1. Agregar pruebas consumiendo servicios **HEAD**, **PATCH**, **PUT**, **DELETE**. Utilice <https://httpbin.org/> para encontrar los servicios y la documentación de [axios](https://axios-http.com/docs/intro)
 1. Elimine el archivo `test/HelloWord.test.js`
-1. Haga commit y push de los cambios, creen un PR y solicite la revisión. Una vez aprobado haga merge con master
+1. Haga commit y push de los cambios, creen un PR y solicite la revisión. Una vez aprobado haga merge con main
 
 ### Integración Continua
 
@@ -153,7 +211,7 @@ En esta sesión se configurará la integración continua con Github Actions, adi
 1. Modifique el script de **test** del package.json agregando al final `-t 5000`
 1. Cree un PR
 1. Verificar que la ejecución del action termine correctamente
-1. Ir a la configuración del repositorio y modifique el branch protegido master activando github actions como requerido
+1. Ir a la configuración del repositorio y modifique el branch protegido main activando github actions como requerido
 1. Solicite revisión del PR
 
 ### Reporte de Pruebas
